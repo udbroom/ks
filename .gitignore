@@ -1,0 +1,4 @@
+# Generated build output — regenerate with:
+#   python3 .kitchen-sink-index-tools/convert.py && python3 .kitchen-sink-index-tools/build_html.py
+kitchen-sink-index.html
+.kitchen-sink-index-tools/blocks_data.json
