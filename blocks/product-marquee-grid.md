@@ -1,10 +1,6 @@
 # Product Marquee Grid
 
-> **Quick summary:** A small product-highlight tile — an icon/heading "chiclet" stacked above body copy and a CTA — meant to sit alongside other tiles in a grid of products or offers. Authored as 1 row, 1 cell (icon, heading, body, optional label paragraph, then a bold/italic CTA link). Two variations: the default "soft offer" (label-style CTA) and `featured-offer` (large filled chip button, pinned to 25% width on desktop). Only the first cell of the first row is read — extra rows/cells are ignored.
-
----
-
-A compact promo panel: a product icon and heading ("chiclet") stacked above body copy, with a call-to-action at the bottom. Use it as a small product-highlight tile inside a grid of several products/offers on a page (e.g. a row of app tiles each linking to their own product page).
+> **Quick summary:** A small product-highlight tile — an icon/heading "chiclet" stacked above body copy and a CTA — meant to sit alongside other tiles in a grid of products or offers (e.g. a row of app tiles each linking to its own product page). Authored as 1 row, 1 cell (icon, heading, body, optional label paragraph, then a bold/italic CTA link). Two variations: the default "soft offer" (label-style CTA) and `featured-offer` (large filled chip button, pinned to 25% width on desktop). Only the first cell of the first row is read — extra rows/cells are ignored.
 
 ## Authoring instructions
 

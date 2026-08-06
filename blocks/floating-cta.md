@@ -1,10 +1,6 @@
 # Floating CTA
 
-> **Quick summary:** A sticky, single-button CTA that slides/fades into view as the reader scrolls. Authored as 1 row, 1 cell containing exactly two paragraphs (an icon image, then a link/text for the button). No named variations, but the link type (plain vs. a commerce/checkout link) changes runtime behavior. Important: the CTA is invisible by default and only appears via a required companion Section Metadata `custom-hide` row — without it, the block never shows up.
-
----
-
-A single call-to-action (CTA) button that sticks to the bottom of the viewport and slides/fades into view once its section is in view. Use it when you want a persistent "Buy now" / "Get started" style button that follows the reader down the page (or on/off, based on which section is currently visible) instead of a CTA that scrolls away with the content.
+> **Quick summary:** A sticky, single-button CTA (e.g. "Buy now" / "Get started") that slides/fades into view as the reader scrolls, instead of scrolling away with the content. Authored as 1 row, 1 cell containing exactly two paragraphs (an icon image, then a link/text for the button). No named variations, but the link type (plain vs. a commerce/checkout link) changes runtime behavior. Important: the CTA is invisible by default and only appears via a required companion Section Metadata `custom-hide` row — without it, the block never shows up.
 
 ## Authoring instructions
 

@@ -1,10 +1,6 @@
 # Carousel C2
 
-> **Quick summary:** A full-width, swipeable hero-style slide carousel with a parallax "spread" effect between slides. Unusually, slide content isn't authored inside the block — the block itself is just one row/two cells (carousel name, aria-label), and each slide is its own page section tagged with a Section Metadata `carousel` row matching that name. No author-facing variations. Gotcha: matching is by exact text, so a typo in the carousel name silently drops that slide instead of erroring — see [section-metadata.md](./section-metadata.md).
-
----
-
-A full-width, swipeable slide carousel (drag, arrow keys, or Previous/Next buttons) with a "spread" parallax effect between slides. Unlike most Milo blocks, a slide's content is **not** authored inside the carousel block itself — each slide is a normal page section that opts into the carousel via [Section Metadata](./section-metadata.md). Use this when you want a hero-style rotating showcase (image + optional text overlay per slide) rather than a simple content-grid carousel.
+> **Quick summary:** A full-width, swipeable (drag, arrow keys, or Previous/Next buttons) hero-style slide carousel with a parallax "spread" effect between slides — use it for a rotating showcase rather than a simple content-grid carousel. Unusually, slide content isn't authored inside the block — the block itself is just one row/two cells (carousel name, aria-label), and each slide is its own page section tagged with a Section Metadata `carousel` row matching that name. No author-facing variations. Gotcha: matching is by exact text, so a typo in the carousel name silently drops that slide instead of erroring — see [section-metadata.md](./section-metadata.md).
 
 ## Authoring instructions
 

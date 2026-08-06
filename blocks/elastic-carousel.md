@@ -1,10 +1,6 @@
 # Elastic Carousel
 
-> **Quick summary:** A row of compact cards that elastically expand on hover/focus to reveal more of a video or image, stacking with scroll-driven behavior on mobile. Authored as one row per card, each with two columns: a text column read positionally as icon, heading, link name, then description (which must contain the link), and a media column (image or `.mp4` link). No author-facing variations — behavior only changes automatically for RTL pages. Gotcha: the whole card is one big link, so avoid adding a second link elsewhere in the card.
-
----
-
-A row of compact cards that "grow" (elastically expand) on hover/focus to reveal more of their video or image, then settle back down — with a stacked, scroll-driven layout on mobile. Use it for a horizontal showcase of 5 (or so) linked items, such as feature highlights or tutorial teasers, where a short preview video or image is the main draw.
+> **Quick summary:** A row of compact cards (typically around 5) that elastically expand on hover/focus to reveal more of a video or image, then settle back down, with scroll-driven stacking on mobile — used for a horizontal showcase of linked items like feature highlights or tutorial teasers. Authored as one row per card, each with two columns: a text column read positionally as icon, heading, link name, then description (which must contain the link), and a media column (image or `.mp4` link). No author-facing variations — behavior only changes automatically for RTL pages. Gotcha: the whole card is one big link, so avoid adding a second link elsewhere in the card.
 
 ## Authoring instructions
 
@@ -52,3 +48,4 @@ The only behavioral change driven by authoring context is document direction: on
 - The label paragraph's text is also reused for analytics tracking and for building the carousel's accessible name, which the code expects in a `Category|Label` pipe-delimited format (e.g. `Adobe Express|Learn more`) — if you omit the pipe, the carousel's accessible label falls back to the generic string "Adobe slides".
 - SVG images (icon or media) are automatically rewritten to Milo's federated (shared, cross-site) asset URL; no special authoring is needed beyond using a normal image.
 - Video slides only get their real playback, autoplay/rewind-on-hover, and mobile auto-play-in-view behavior if the media cell resolves to an actual video element via Milo's standard video-link authoring — a plain video *file link* pasted the normal Milo way is what triggers this; a video embedded via an unsupported method will just render as a static link/image.
+- Video gotcha: the poster image (shown in the example above) must sit immediately next to the video link — Milo grabs the poster from whichever image is adjacent to the link, and won't show one otherwise. For the mobile auto-play-in-view behavior above to actually kick in, the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it scrolls into view it has already finished, so visitors just see its frozen last frame.

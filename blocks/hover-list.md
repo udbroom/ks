@@ -1,10 +1,6 @@
 # Hover List
 
-> **Quick summary:** A numbered list where hovering (or the active item on touch) reveals a stacked, parallax-following image pile. Authored as a heading row followed by one row per item (label cell + one-or-more-images media cell). Key feature: optional per-breakpoint content overrides via `mobile-viewport`/`tablet-viewport`/`desktop-viewport` divider rows, which can also carry per-breakpoint modifier classes.
-
----
-
-A numbered list of items where hovering (desktop) or the current item (mobile/tablet) reveals stacked, layered thumbnail images that follow the cursor with a springy parallax motion. Use it for feature/benefit lists ("01 Fast performance", "02 Built-in AI", ...) where each item should preview an image or short set of images on hover.
+> **Quick summary:** A numbered list — e.g. feature/benefit lists like "01 Fast performance", "02 Built-in AI" — where hovering (or the active item on touch) reveals a stacked, parallax-following image pile. Authored as a heading row followed by one row per item (label cell + one-or-more-images media cell). Key feature: optional per-breakpoint content overrides via `mobile-viewport`/`tablet-viewport`/`desktop-viewport` divider rows, which can also carry per-breakpoint modifier classes.
 
 ## Authoring instructions
 

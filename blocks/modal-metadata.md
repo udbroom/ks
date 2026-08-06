@@ -1,10 +1,6 @@
 # Modal Metadata
 
-> **Quick summary:** A hidden, config-only block (no visible output) authored as key/value rows (`style`, `curtain`, `background`) — but it only has any effect when placed inside a fragment that is being loaded into a [Modal](./modal.md) dialog; viewed as a standalone page, it does nothing. `style` accepts comma-separated keywords that add CSS classes to the dialog; `curtain: off` removes the dimmed background overlay.
-
----
-
-A hidden, config-only block (`display: none`) that configures the appearance and behavior of a Modal dialog. It only has an effect when it is authored inside the fragment/page that is being loaded *into* a modal (see the Modal block) — if the same fragment is viewed as a normal standalone page, this block does nothing.
+> **Quick summary:** A hidden, config-only block (`display: none`, no visible output) authored as key/value rows (`style`, `curtain`, `background`) — but it only has any effect when placed inside a fragment that is being loaded into a [Modal](./modal.md) dialog; viewed as a standalone page, it does nothing. `style` accepts comma-separated keywords that add CSS classes to the dialog; `curtain: off` removes the dimmed background overlay.
 
 ## Authoring instructions
 
@@ -36,3 +32,4 @@ This block itself has no modifier classes on its own block name — all of its c
 - Because this block is invisible and only "activates" inside a modal, do not expect to see any change when previewing the fragment as a normal page — always test by opening the link that triggers the modal.
 - `style` values are matched to specific CSS in `modal.css`; typing an arbitrary keyword that isn't one of the documented ones adds a class with no visual effect, so stick to the supported list.
 - Only one `style` row is read per block; if you need multiple keywords, put them all in a single row separated by commas rather than adding multiple `style` rows.
+- The `background` key here only holds a static image/color backdrop for a `tall-video` modal — the actual video is authored inside whatever block sits in the fragment (e.g. [Rich Content](./rich-content.md)'s `media` variant). See that block's own Notes for the video-authoring gotcha (poster image adjacency, `#autoplay`/`viewportplay` hash options).

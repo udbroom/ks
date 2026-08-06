@@ -1,10 +1,6 @@
 # Global Footer
 
-> **Quick summary:** The shared site-wide footer (menu columns, featured products, region picker, legal links, social icons). The block instance on a page is normally empty — real content is authored in a separate shared footer document (default `/footer`, overridable per-page via a `footer-source` metadata key), not in the block's own rows. Only variation: `responsive-container`. Key gotcha: editing the block directly on a page does nothing — all content changes must go in the footer document.
-
----
-
-The site-wide footer: a multi-column link menu, a "featured products" row, a region/language picker, legal/privacy links, social icons, and the Adobe logo. It's the same footer that appears (mostly automatically) across Milo pages. Content authors edit it by editing a separate shared **footer document**, not by filling in rows on the page where the block appears.
+> **Quick summary:** The shared site-wide footer (menu columns, featured products, region picker, legal links, social icons, and the Adobe logo) that appears automatically across Milo pages. The block instance on a page is normally empty — real content is authored in a separate shared footer document (default `/footer`, overridable per-page via a `footer-source` metadata key), not in the block's own rows. Only variation: `responsive-container`. Key gotcha: editing the block directly on a page does nothing — all content changes must go in the footer document.
 
 ## Authoring instructions
 

@@ -1,10 +1,6 @@
 # Quote
 
-> **Quick summary:** A large, decoratively framed pull-quote with an optional name + role attribution below it, used to spotlight a testimonial or executive quote. Authored as a single cell containing up to three top-level heading/paragraph elements, in order: quote (required), name (optional), role (optional, only used if a name is present). Variations control attribution alignment: default (left), `center-footer`, `right-footer`. Use a real typographic opening quote character (not a straight `"`) if you want the automatic hanging-punctuation effect.
-
----
-
-A large, framed pull-quote: a big quote statement inside a decorative bordered frame (with corner dots and center guide lines), with an optional attribution (name + role/title) below it. Use it to spotlight a customer testimonial or executive quote on its own.
+> **Quick summary:** A large, decoratively framed pull-quote (corner dots, center guide lines) with an optional name + role attribution below it, used to spotlight a customer testimonial or executive quote on its own. Authored as a single cell containing up to three top-level heading/paragraph elements, in order: quote (required), name (optional), role (optional, only used if a name is present). Variations control attribution alignment: default (left), `center-footer`, `right-footer`. Use a real typographic opening quote character (not a straight `"`) if you want the automatic hanging-punctuation effect.
 
 ## Authoring instructions
 

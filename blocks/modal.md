@@ -1,10 +1,6 @@
 # Modal
 
-> **Quick summary:** Not a table-based block — it's applied automatically to any ordinary link whose URL ends in a `#hash`, turning that link into a trigger that opens the target page/fragment in an overlay dialog instead of navigating away. The dialog's appearance/behavior (size, curtain, close button, etc.) is controlled separately via a [Modal Metadata](./modal-metadata.md) block placed inside the target fragment, not on the link itself. Key gotcha: reused hash fragments across different links/fragments only resolve correctly for the first one encountered.
-
----
-
-Opens a page or fragment in an overlay dialog on top of the current page, instead of navigating away. Use it for things like pricing details, sign-up flows, or embedded checkout/plan-management tools that should stay in the context of the current page.
+> **Quick summary:** Not a table-based block — it's applied automatically to any ordinary link whose URL ends in a `#hash`, turning that link into a trigger that opens the target page/fragment in an overlay dialog instead of navigating away (e.g. for pricing details, sign-up flows, or embedded checkout/plan-management tools). The dialog's appearance/behavior (size, curtain, close button, etc.) is controlled separately via a [Modal Metadata](./modal-metadata.md) block placed inside the target fragment, not on the link itself. Key gotcha: reused hash fragments across different links/fragments only resolve correctly for the first one encountered.
 
 ## Authoring instructions
 
@@ -69,3 +65,4 @@ Inside `/fragments/pricing-details`, add a [Modal Metadata](./modal-metadata.md)
 - The modal automatically closes on Escape, on clicking the dark curtain, or via its close ("X") button, and restores focus to the triggering link afterward — no extra authoring needed for this behavior.
 - If two authors reuse the same hash for different links pointing at different fragments, only the first one encountered will resolve correctly; keep hash fragments unique per fragment.
 - **[Section Metadata](./section-metadata.md) `layout`/`style` interaction:** `region selector text` (→ class `region-selector-text`) is a narrow, purpose-built value applied to a section *inside a modal fragment* to tighten that section's intro-copy padding/typography — it's used specifically by the region/locale-selector modal. It isn't a general Modal styling option; don't add it to unrelated modal content expecting a generic effect.
+- With `tall-video`: the video itself is authored inside the target fragment using whatever block holds it (e.g. [Rich Content](./rich-content.md)'s `media` variant), not on Modal itself — `tall-video` only sizes the dialog. See that block's own Notes for the video-authoring gotcha (poster image adjacency, `#autoplay`/`viewportplay` hash options).

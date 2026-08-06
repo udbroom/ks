@@ -1,10 +1,6 @@
 # News
 
-> **Quick summary:** A headlined grid of short news/press items — headline, optional body snippet, optional standalone "read more" link — authored as a table with a header row (icon + section label) followed by one row per item. Item count (2, 3, or 4, sometimes 6) determines the grid layout (`two-up`/`three-up`/`four-up`/`six-up`). Only variation: `quiet`, for a lower-emphasis "read more" link style.
-
----
-
-A headlined grid of short news/press items (headline + snippet + optional "read more" link), such as a press-mentions or in-the-news section. Use it when you need to list several short news items under one section heading, each with its own optional link out to the full story.
+> **Quick summary:** A headlined grid of short news/press items — headline, optional body snippet, optional standalone "read more" link — such as a press-mentions or in-the-news section. Authored as a table with a header row (icon + section label) followed by one row per item. Item count (2, 3, or 4, sometimes 6) determines the grid layout (`two-up`/`three-up`/`four-up`/`six-up`). Only variation: `quiet`, for a lower-emphasis "read more" link style.
 
 ## Authoring instructions
 

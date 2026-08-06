@@ -1,10 +1,6 @@
 # Split Aside Grid
 
-> **Quick summary:** A feature-list-plus-media block — a clickable vertical list of features paired with a stacked deck of matching images/videos, expanding the description and swapping the front card on click (desktop) or swipe (mobile). Authored as one row per feature/slide, each with two cells: content (heading, body, optional link) and media. Variations: `dark`, `mobile-carousel` (an alternate mobile swipe interaction). `mobile-carousel` is only available in the expanded deployment of this block; a simpler deployment only supports `dark`.
-
----
-
-A feature-list-plus-media block: a vertical list of clickable feature items on one side and a stacked "card deck" of matching images/videos on the other. On desktop, clicking a list item expands its description and swaps the front card in the stack. On mobile it becomes a swipeable interaction with prev/next controls and slide dots — by default a card-stack where the current card flies off-screen as you swipe (see Variations for an alternative mobile interaction). Authors use it to walk through several related features, each with its own illustration.
+> **Quick summary:** A feature-list-plus-media block — a clickable vertical list of features paired with a stacked deck of matching images/videos, expanding the description and swapping the front card on click (desktop) or swipe (mobile) — letting authors walk visitors through several related features, each with its own illustration. Authored as one row per feature/slide, each with two cells: content (heading, body, optional link) and media. Variations: `dark`, `mobile-carousel` (an alternate mobile swipe interaction). `mobile-carousel` is only available in the expanded deployment of this block; a simpler deployment only supports `dark`.
 
 ## Authoring instructions
 
@@ -59,3 +55,4 @@ Where available, with the mobile carousel variant:
 - The mobile interaction is swipe-driven (pointer drag) with an aria-live region announcing "Slide X of Y" for screen-reader users; desktop is a plain click-to-expand accordion-style list — no author configuration changes this beyond the `mobile-carousel` variant where available, it's otherwise purely responsive.
 - Supports Milo's `mobile-viewport`/`tablet-viewport`/`desktop-viewport` content-override rows (same viewport-delimiter pattern as [Rich Content](./rich-content.md), including the 768px/1280px breakpoint split) if you need to vary slide content per breakpoint.
 - Where `mobile-carousel` is available, the code clones the first and last slide to create a seamless-loop illusion when swiping past the ends — this is automatic and requires no extra authoring.
+- Video gotcha: pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the video to autoplay only while scrolled into view (instead of finishing during page load), the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it's visible it has already finished, so visitors just see its frozen last frame.

@@ -1,10 +1,6 @@
 # PDF Space
 
-> **Quick summary:** A large scroll-driven hero — eight preview cards fan out along an arc, peel onto a grid, then glide into an Acrobat app mockup while the headline/CTA slide in. Authored as exactly 6 fixed rows in strict order (two 4-cell card rows, marketing text, title, 3-cell mockup images, CTA); row order and column counts are rigid, and misauthoring silently misassigns content rather than erroring. No author-facing variations; falls back to a static layout automatically for reduced-motion visitors.
-
----
-
-A large scroll-driven hero animation: eight small preview cards fan out along an arc, peel onto a flat grid, and finally glide into the screen slots of an Acrobat app mockup while the headline and CTA slide in underneath. Use it as a showcase hero for a PDF/Acrobat-style product page where you want a long, cinematic scroll sequence rather than a static hero. It automatically falls back to a static, non-animated layout for visitors who have "reduce motion" turned on.
+> **Quick summary:** A large scroll-driven hero — eight preview cards fan out along an arc, peel onto a grid, then glide into an Acrobat app mockup while the headline/CTA slide in. Use it as a showcase hero for a PDF/Acrobat-style product page needing a long, cinematic scroll sequence rather than a static hero. Authored as exactly 6 fixed rows in strict order (two 4-cell card rows, marketing text, title, 3-cell mockup images, CTA); row order and column counts are rigid, and misauthoring silently misassigns content rather than erroring. No author-facing variations; falls back to a static layout automatically for reduced-motion visitors.
 
 ## Authoring instructions
 

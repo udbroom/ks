@@ -1,10 +1,6 @@
 # Explore Card
 
-> **Quick summary:** A full-bleed image/video card where the entire tile is one clickable link, with icon/title/description over a gradient scrim that fades in on hover/focus. Authored as a table: row 1 (required) holds content plus background; row 2 (optional) adds extra layered foreground content. Variations: `dark`, plus deployment-only extras like `center`, `show-link`, and per-breakpoint background stacking. Gotcha: when the section's Section Metadata `layout`/`style` includes `bento`, spacing/sizing (and in some deployments a mobile card-stack scroll animation) applies automatically.
-
----
-
-A full-bleed image or video card where the entire tile is one clickable link: an icon, title, and description sit over a background image or video, with a gradient scrim (a dark overlay for text readability) that fades in on hover/focus. Use it for "explore" grids where each card links out to a bigger story or product page.
+> **Quick summary:** A full-bleed image/video card where the entire tile is one clickable link, with icon/title/description over a gradient scrim that fades in on hover/focus — used for "explore" grids where each card links out to a bigger story or product page. Authored as a table: row 1 (required) holds content plus background; row 2 (optional) adds extra layered foreground content. Variations: `dark`, plus deployment-only extras like `center`, `show-link`, and per-breakpoint background stacking. Gotcha: when the section's Section Metadata `layout`/`style` includes `bento`, spacing/sizing (and in some deployments a mobile card-stack scroll animation) applies automatically.
 
 ## Authoring instructions
 
@@ -56,5 +52,6 @@ Dark variation:
 - The icon image is optional and purely decorative — if you skip it, the heading simply becomes the first item and picks up extra top spacing automatically.
 - The whole card is keyboard-focusable and shows a visible focus ring; don't nest another interactive element (e.g. a second button) inside the content cell, since only one link/destination is supported per card.
 - Minimum card height grows at larger screen widths purely via styling — no extra authoring is needed to accommodate this.
+- Video gotcha: pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the video to autoplay only while scrolled into view (rather than finishing during page load), the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it's visible it has already finished, so visitors just see its frozen last frame.
 - Dark-mode text/background contrast is standard Milo section-level theming (separate from the `dark` variation above) — it applies automatically when the enclosing section/page is set to dark, without any class on this block.
 - **[Section Metadata](./section-metadata.md) `layout`/`style` interaction:** when this block sits in a section whose Section Metadata `layout`/`style` row includes `bento`, extra spacing/sizing rules kick in automatically (padding, heading margins, and content-aspect-ratio adjustments tuned for a bento grid) — nothing extra to author on the card itself. In some deployments, adding `bento, stack-mobile` together on that Section Metadata row also turns a bento section's Explore Cards into a sticky, depth-scaled mobile card-stack scroll animation (with a [Rich Content](./rich-content.md) title pinned above it) below the 768px breakpoint — see [section-metadata.md](./section-metadata.md).

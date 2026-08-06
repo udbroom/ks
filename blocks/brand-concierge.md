@@ -1,10 +1,6 @@
 # Brand Concierge
 
-> **Quick summary:** An AI chat entry point that opens a full-screen chat modal from a hero, inline section, or scroll-following floating element. Authored as a fixed, positional stack of 5 rows — Background, Header, Cards, Input, Legal — always in that order, even for floating-only variants. Key variations: `hero`, `input-first`, `floating-button`, `floating-button-only`, `floating-anchor-hide`, `floating-delay-<ms>`, `floating-anchor-delay-<ms>`, `c2-dark`, `pill-cards` (some deployments also add `dark` and `floating-input`/`floating-input-only`/`floating-input-dark`). Gotcha: rows are read positionally, so never skip or delete a row — leave it empty instead.
-
----
-
-An AI chat entry point ("Ask") that lets visitors type a question or tap a suggested prompt to open a full-screen AI chat modal (a pop-up overlay). Use it as a page hero (the large, top-of-page introductory section), an inline section further down the page, or as a small floating button/bar that follows the visitor as they scroll. Choose it when a page wants to offer AI-assisted product guidance instead of (or alongside) standard marketing content.
+> **Quick summary:** An AI chat entry point ("Ask") that lets visitors type a question or tap a suggested prompt to open a full-screen chat modal, from a hero, inline section, or scroll-following floating element — for pages that want to offer AI-assisted product guidance alongside standard marketing content. Authored as a fixed, positional stack of 5 rows — Background, Header, Cards, Input, Legal — always in that order, even for floating-only variants. Key variations: `hero`, `input-first`, `floating-button`, `floating-button-only`, `floating-anchor-hide`, `floating-delay-<ms>`, `floating-anchor-delay-<ms>`, `c2-dark`, `pill-cards` (some deployments also add `dark` and `floating-input`/`floating-input-only`/`floating-input-dark`). Gotcha: rows are read positionally, so never skip or delete a row — leave it empty instead.
 
 ## Authoring instructions
 

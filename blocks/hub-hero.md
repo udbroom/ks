@@ -1,10 +1,6 @@
 # Hub Hero
 
-> **Quick summary:** A large scroll-driven hero with a fading header, a 5-column parallax image grid, and a horizontal carousel of exactly 4 slides. Authored as a strict, fixed sequence of 8 rows (header, 2 image-grid rows, carousel header, 4 slide rows). Variations are text-sizing modifier classes: `heading-<1–6>`, `body-<sm|md|lg|xl>`, `button-<sm|md|lg|xl>`. Important gotcha: content is located by row position, not markers, so adding/removing/reordering rows (or using anything other than exactly 4 carousel slides) breaks the layout.
-
----
-
-A large scroll-driven landing hero: a header (eyebrow/heading/body/CTA) that fades as you scroll, a 5-column parallax image grid, and a horizontal carousel of exactly 4 large slides that appear to "rise" out of the image grid as you scroll further. Use it as the top-of-page hero for hub/landing pages that want a cinematic, scroll-linked reveal instead of a static hero.
+> **Quick summary:** A large scroll-driven hero with a fading header, a 5-column parallax image grid, and a horizontal carousel of exactly 4 slides that appear to "rise" out of the grid as you scroll — used as the top-of-page hero for hub/landing pages wanting a cinematic, scroll-linked reveal instead of a static hero. Authored as a strict, fixed sequence of 8 rows (header, 2 image-grid rows, carousel header, 4 slide rows). Variations are text-sizing modifier classes: `heading-<1–6>`, `body-<sm|md|lg|xl>`, `button-<sm|md|lg|xl>`. Important gotcha: content is located by row position, not markers, so adding/removing/reordering rows (or using anything other than exactly 4 carousel slides) breaks the layout.
 
 ## Authoring instructions
 
@@ -53,4 +49,5 @@ Add modifier classes to the block name cell to override default text sizing (the
 - Exactly 4 carousel slides are expected (`--slides: 4` and column-offset math assume 4). Fewer or more will visually break the scroll animation.
 - The block is heavily scroll/animation driven (CSS `animation-timeline`), with full `prefers-reduced-motion` fallbacks and a `@supports not (animation-timeline: view())` fallback for browsers without scroll-driven animation support (e.g. Firefox) — no extra authoring is needed for these, they're automatic.
 - On mobile, video slides autoplay/rewind based on scroll position via `IntersectionObserver`; this is automatic once a video is present in a slide's media cell.
+- Video gotcha: pair the video link with its poster image as two adjacent cells in the same row — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the scroll-triggered play/pause above to actually kick in, the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it scrolls into view it has already finished, so visitors just see its frozen last frame.
 - The first slide gets a unique, more descriptive `aria-label` (built from its link text) since assistive tech announces it as the start of the carousel; the rest just get "N of 4."

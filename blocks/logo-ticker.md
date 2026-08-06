@@ -1,10 +1,6 @@
 # Logo Ticker
 
-> **Quick summary:** A horizontal strip of partner/customer logos that auto-scrolls in a seamless loop (or centers statically if the logos already fit). Authored as one row of icon-shortcode cells, plus an optional second row with a plain-text description used only as the ticker's `aria-label`. No author-facing variations — the only class toggled (`is-static`) is computed automatically at runtime, not set by the author.
-
----
-
-A horizontal row of partner/customer logos that auto-scrolls (drifts) sideways in a seamless loop. If the logos already fit within the container width, it just centers them statically instead of scrolling. Use it for "Trusted by" / partner-logo strips.
+> **Quick summary:** A horizontal strip of partner/customer logos that auto-scrolls in a seamless loop (or centers statically if the logos already fit) — commonly used for "Trusted by" / partner-logo strips. Authored as one row of icon-shortcode cells, plus an optional second row with a plain-text description used only as the ticker's `aria-label`. No author-facing variations — the only class toggled (`is-static`) is computed automatically at runtime, not set by the author.
 
 ## Authoring instructions
 

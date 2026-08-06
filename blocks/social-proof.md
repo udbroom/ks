@@ -1,10 +1,6 @@
 # Social Proof
 
-> **Quick summary:** A single testimonial/highlight card combining an image with either a heading-and-body text block or a pull-quote, plus a subtle scroll-driven zoom animation. Authored as two rows: Row 1 holds the text (and an optional background-color cell), Row 2 holds the media. No author-facing variation classes — the pull-quote layout is triggered simply by formatting Cell 1's text as a blockquote. Row 2's media cell is read without a null-check, so a missing media item will throw at author-time rather than fail silently.
-
----
-
-A single testimonial/highlight card pairing an image with a headline-and-body text block (or a pull-quote), with a subtle scroll-driven zoom/stretch animation. Authors use it to spotlight a customer story, quote, or key stat alongside supporting imagery.
+> **Quick summary:** A single testimonial/highlight card combining an image with either a heading-and-body text block or a pull-quote, plus a subtle scroll-driven zoom animation — used to spotlight a customer story, quote, or key stat alongside supporting imagery. Authored as two rows: Row 1 holds the text (and an optional background-color cell), Row 2 holds the media. No author-facing variation classes — the pull-quote layout is triggered simply by formatting Cell 1's text as a blockquote. Row 2's media cell is read without a null-check, so a missing media item will throw at author-time rather than fail silently.
 
 ## Authoring instructions
 
@@ -49,3 +45,4 @@ Pull-quote variant with background color:
 - Row 2's media cell isn't checked for emptiness before the block tries to style it, so an empty or missing Row 2 will cause an error when the page loads — always include a media item in Row 2.
 - Supports Milo's mobile/tablet/desktop content-override rows (same viewport-delimiter pattern described in [rich-content.md](./rich-content.md)'s Notes).
 - The card has a scroll-linked "stretch" and content-enter animation built into the CSS; this is automatic and not configurable per instance, and is disabled under `prefers-reduced-motion: reduce`.
+- Video gotcha (Row 2 media): pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the video to autoplay only while scrolled into view (instead of finishing during page load), the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it's visible it has already finished, so visitors just see its frozen last frame.

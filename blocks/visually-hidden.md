@@ -1,10 +1,6 @@
 # Visually Hidden
 
-> **Quick summary:** A CSS-only utility block, not a content block — it doesn't process anything you author, so there's no real authoring contract or row/cell shape to follow. Whatever content you put in the table (typically one row, one cell of plain text) is clipped to a 1px box and hidden visually while staying readable by screen readers. No variations exist. Avoid putting interactive content (links, buttons) inside it, since it will be functionally present but invisible and effectively untappable.
-
----
-
-Visually Hidden is a utility block, not a content block — it doesn't process or transform anything you put inside it. Its only job is CSS: whatever you author inside it is clipped to a 1px box and visually hidden, while remaining present for screen readers. Use it to add text that assistive technology should announce (extra context, a label, an instruction) without displaying it on screen.
+> **Quick summary:** A CSS-only utility block, not a content block — it doesn't process anything you author, so there's no real authoring contract or row/cell shape to follow. Use it to add text assistive technology should announce (extra context, a label, an instruction) without displaying it on screen: whatever content you put in the table (typically one row, one cell of plain text) is clipped to a 1px box and hidden visually while staying readable by screen readers. No variations exist. Avoid putting interactive content (links, buttons) inside it, since it will be functionally present but invisible and effectively untappable.
 
 ## Authoring instructions
 

@@ -1,10 +1,6 @@
 # Side by Side
 
-> **Quick summary:** A two-card layout pairing a large overlay card (text on image) with a smaller stacked card (text below media). Authored as two rows — a media row and a text row — with one cell per card, cells lining up between rows. Variations: `dark`, `reverse`, `equal`, `featured`, `small-left`. Only `dark` is guaranteed everywhere; the other four variations depend on which deployment of the block you're using, and `featured` expects exactly one media/text cell pair, not two.
-
----
-
-A two-card layout pairing a large image/video overlay card (text sits on top of the image) with a smaller stacked text-and-media card (text sits below the image). Authors use it to showcase two related pieces of content (e.g. a feature highlight next to a supporting story) side by side on desktop, stacked on mobile. Some deployments of this block also support single-card and matched-pair layouts for building mixed hero-plus-grid arrangements (see Variations).
+> **Quick summary:** A two-card layout pairing a large overlay card (text on image) with a smaller stacked card (text below media), letting authors show two related pieces of content side by side on desktop, stacked on mobile. Authored as two rows — a media row and a text row — with one cell per card, cells lining up between rows. Variations: `dark`, `reverse`, `equal`, `featured`, `small-left`. Only `dark` is guaranteed everywhere; the other four variations depend on which deployment of the block you're using, and `featured` expects exactly one media/text cell pair, not two.
 
 ## Authoring instructions
 
@@ -78,5 +74,6 @@ Featured + equal pair (hero card followed by a matched two-up row, where the exp
 
 - If either row is missing, or either row has fewer cells than expected for the variant, nothing renders — always author exactly matching row/cell structure.
 - Videos in either card are managed automatically: an intersection observer pauses off-screen video and resumes on-screen video; authors do not need to configure autoplay behavior manually beyond adding the video.
+- Video gotcha: pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. Using `#autoplay` alone plays the video immediately on page load (before the intersection observer above ever gets a chance to manage it) — by the time the card scrolls into view it has already finished, so visitors just see its frozen last frame. If you want it scroll-gated instead, its hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`.
 - Supports Milo's mobile/tablet/desktop content-override rows (see [rich-content.md](./rich-content.md)'s Notes for how that pattern works) — a viewport-delimiter row can override just one card's media or text while leaving the other card's content inherited from the previous viewport.
 - Where the `featured` variant is available, it only assigns a card type to the first media/text cell pair. If you accidentally author a second media/text cell pair alongside `featured`, that second card gets an invalid/blank card-type class and won't render its overlay/stacked styling correctly — keep `featured` blocks to exactly one media cell + one text cell.

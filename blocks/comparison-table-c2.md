@@ -1,10 +1,6 @@
 # Comparison Table (C2)
 
-> **Quick summary:** A responsive pricing/plan comparison table: a sticky row of plan cards above collapsible feature-comparison rows, with mobile column-switching and tooltips. Authored as one table — row 1 is the mandatory header (corner cell + plan cells split by `-` dividers into label/collapsible/CTA groups), every row after is a feature row, and a `+++` row splits the table into multiple independently-collapsible sub-tables. Variations: `static-header`, and a Section Metadata `expand` key controlling which sub-tables open by default. Gotcha: column alignment across rows is purely positional, so adding/removing a plan column means updating every row.
-
----
-
-A responsive pricing/plan comparison table: a sticky header row of plan "cards" (title, price, feature blurb, CTA button) above one or more collapsible feature-comparison tables, with mobile column-switching, tooltips, and accessibility labeling built in.
+> **Quick summary:** A responsive pricing/plan comparison table: a sticky row of plan cards (title, price, feature blurb, CTA button) above collapsible feature-comparison rows, with mobile column-switching, tooltips, and built-in accessibility labeling. Authored as one table — row 1 is the mandatory header (corner cell + plan cells split by `-` dividers into label/collapsible/CTA groups), every row after is a feature row, and a `+++` row splits the table into multiple independently-collapsible sub-tables. Variations: `static-header`, and a Section Metadata `expand` key controlling which sub-tables open by default. Gotcha: column alignment across rows is purely positional, so adding/removing a plan column means updating every row.
 
 ## Authoring instructions
 

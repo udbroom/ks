@@ -1,10 +1,6 @@
 # Region Nav
 
-> **Quick summary:** The country/language picker shown inside the footer's "change region" modal, with an intro heading plus a scrollable, multi-column list of region/language links. Authored as exactly 2 rows: row 1 is intro heading + body copy, row 2 holds one cell per region group (bold label + bulleted links). There are no author-facing variations — every link's `href` in row 2 is automatically rewritten to the equivalent page in the target locale. This block is meant to live inside a modal/dialog fragment, not as a normal in-page block.
-
----
-
-Region Nav is the country/language picker shown inside the "change region" modal opened from the footer's language link (URL fragment `#langnav`). It shows an intro heading plus a scrollable, multi-column list of region/language links, and automatically rewrites each link's URL to preserve the visitor's current page when they switch locale.
+> **Quick summary:** The country/language picker shown inside the footer's "change region" modal (opened via the footer's language link, URL fragment `#langnav`), with an intro heading plus a scrollable, multi-column list of region/language links. Authored as exactly 2 rows: row 1 is intro heading + body copy, row 2 holds one cell per region group (bold label + bulleted links). There are no author-facing variations — every link's `href` in row 2 is automatically rewritten to the equivalent page in the target locale, preserving the visitor's current page. This block is meant to live inside a modal/dialog fragment, not as a normal in-page block.
 
 ## Authoring instructions
 

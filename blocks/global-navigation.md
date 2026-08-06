@@ -1,10 +1,6 @@
 # Global Navigation
 
-> **Quick summary:** The shared Adobe header bar (logo, primary nav, search, sign-in). The block's own table content is never read — it just mounts the shared federal nav app, which pulls real content from a separate nav document (default `/gnav`, overridable via a `gnav-source` metadata key). This block has no author-facing variations at all — its CSS is empty and it checks no modifier classes.
-
----
-
-Global Navigation is the shared Adobe header bar (logo, primary nav, search, sign-in/profile) that appears at the top of every Milo page. It is a mount point only — its own authored table carries no content, so authors mainly interact with it through page-level Metadata keys.
+> **Quick summary:** The shared Adobe header bar (logo, primary nav, search, sign-in) that appears at the top of every Milo page. The block's own table content is never read — it just mounts the shared federal nav app, which pulls real content from a separate nav document (default `/gnav`, overridable via a `gnav-source` metadata key). This block has no author-facing variations at all — its CSS is empty and it checks no modifier classes.
 
 ## Authoring instructions
 

@@ -1,10 +1,6 @@
 # Tour
 
-> **Quick summary:** A scrollable, numbered product-tour layout meant to run inside a modal dialog — a header (eyebrow + title), 2-3 image-plus-description steps, and a sticky footer promo/CTA. Authored with exactly two single-column rows (header and footer) plus one two-column row per step; rows are classified purely by cell count, not by position, so an extra/missing cell can misclassify a header or footer row as a step. Only variation: `dark` (not available in every deployment). Gotcha: this block is designed to live inside a modal link's content, not as a standalone in-page block.
-
----
-
-A scrollable, numbered product-tour layout meant to run inside a modal dialog: a header (eyebrow + title), a series of 2–3 image-plus-description steps, and a sticky footer promo with a call-to-action link. On touch devices it gets a drag-to-dismiss handle. Authors use it for "what's new" or guided-feature walkthroughs launched from a modal link.
+> **Quick summary:** A scrollable, numbered product-tour layout meant to run inside a modal dialog — a header (eyebrow + title), 2-3 image-plus-description steps, and a sticky footer promo/CTA, with a drag-to-dismiss handle on touch devices. Used for "what's new" or guided-feature walkthroughs launched from a modal link. Authored with exactly two single-column rows (header and footer) plus one two-column row per step; rows are classified purely by cell count, not by position, so an extra/missing cell can misclassify a header or footer row as a step. Only variation: `dark` (not available in every deployment). Gotcha: this block is designed to live inside a modal link's content, not as a standalone in-page block.
 
 ## Authoring instructions
 
@@ -13,7 +9,7 @@ The block is authored with **exactly two single-column rows** (a header and a fo
 | Row | Content |
 |---|---|
 | First single-cell row (header) | One cell containing an optional short paragraph (becomes the eyebrow line, e.g. `New in Creative Cloud`) followed by a Heading 3 (becomes the tour's title, e.g. `### See what's new`). |
-| Two-cell rows (tour steps — author 1 to 3 of these) | **Cell 1**: body paragraph(s) describing the step. **Cell 2**: one image (or more than one — extra images after the first are placed in a centered secondary row below the main image). Steps are numbered automatically in document order and labeled `( 1/3 )`, `( 2/3 )`, etc. |
+| Two-cell rows (tour steps — author 1 to 3 of these) | **Cell 1**: body paragraph(s) describing the step. **Cell 2**: one image (or more than one — extra images after the first are placed in a centered secondary row below the main image). Steps are ordered automatically by their position in the document; as of 2026-07-28[^no-count] a visible step counter (e.g. `( 1/3 )`) is no longer shown to visitors. |
 | Second single-cell row (footer) | One cell containing exactly two paragraphs: **first paragraph** = a small promo image/icon, **second paragraph** = the call-to-action link. The link text supports the pipe syntax `Button text\|Accessible label` to set a different `aria-label` than the visible text; if you don't include a link and just type text, that text becomes the CTA label with a non-functional `#` href. |
 
 ## Variations
@@ -23,6 +19,7 @@ The block is authored with **exactly two single-column rows** (a header and a fo
 | `dark`[^dark] | Switches the sticky footer's fade gradient (and the touch-device grab handle's color scheme) from a light/white fade to a dark/knockout fade — use when the tour's modal content sits on a dark background. | Add `dark` to the block name, e.g. `Tour (dark)`. |
 
 [^dark]: [`26685af`](https://github.com/adobecom/milo/commit/26685af) — Dev Ashish Sardana, 2026-07-15
+[^no-count]: [#6356](https://github.com/adobecom/milo/pull/6356) — Dev Ashish Saradhana, 2026-07-28
 
 Some deployments of this block do not include the `dark` variant — check whether it's supported in your environment before relying on it.
 

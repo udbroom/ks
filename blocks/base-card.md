@@ -1,10 +1,6 @@
 # Base Card
 
-> **Quick summary:** A single promotional card pairing an image with a heading/body/link, for use in a grid of simple tiles. Authored as one table row with two cells — text (foreground) and image (media). Only variation: `featured`, which enlarges the card and adds a parallax reveal. Worth knowing: a Section Metadata `layout`/`style` value (`base card section`) can fix mobile stacking when several of these sit in a grid.
-
----
-
-A single card with an image (or icon-badged image) on one side and a heading/body/link on the other. Use it for simple promotional tiles in a grid — product callouts, feature highlights, or "learn more" teasers — where you need one image, one short block of text, and one link per card.
+> **Quick summary:** A single promotional card pairing an image (optionally icon-badged) with a heading/body/link — for simple tiles in a grid, e.g. product callouts, feature highlights, or "learn more" teasers. Authored as one table row with two cells — text (foreground) and image (media). Only variation: `featured`, which enlarges the card and adds a parallax reveal. Worth knowing: a Section Metadata `layout`/`style` value (`base card section`) can fix mobile stacking when several of these sit in a grid.
 
 ## Authoring instructions
 

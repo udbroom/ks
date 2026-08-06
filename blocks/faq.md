@@ -2,10 +2,6 @@
 
 > **Quick summary:** An accordion of frequently-asked questions, each expanding/collapsing independently via native `<details>`/`<summary>`, with the first item open by default. Authored as one table row per FAQ item — only the row's first cell is used, with a heading as the question and everything after it as the answer. Variations: `seo` (adds FAQPage JSON-LD schema), `heading-<size>`, `body-<size>`. Gotcha: a row without a heading in its first cell is silently skipped, not rendered.
 
----
-
-An accordion of frequently-asked questions. Each question/answer pair expands and collapses independently (native `<details>`/`<summary>`), with the first item open by default.
-
 ## Authoring instructions
 
 The block is authored as a table where **each row is one FAQ item**, and **only the row's first cell is used** — everything else in that row (additional cells) is ignored.

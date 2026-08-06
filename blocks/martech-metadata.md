@@ -1,10 +1,6 @@
 # Martech Metadata
 
-> **Quick summary:** A hidden, config-only block that never renders visibly — it patches Adobe Analytics `daa-ll` tracking labels on localized pages so they match the canonical English label, without changing the visible on-page text. Authored as a simple key/value table (on-page label → replacement label), one row per label pair. It has no variations and produces no visible markup.
-
----
-
-A hidden, config-only block (it is never rendered — `display: none` and it removes itself from the page after running). It lets an author fix up Adobe Analytics tracking labels (`daa-ll` attributes) on a translated/localized page so analytics stay consistent with the English/source label, without changing the visible link or button text.
+> **Quick summary:** A hidden, config-only block that never renders visibly and removes itself from the page after running — it patches Adobe Analytics `daa-ll` tracking labels on localized pages so they match the canonical English label, without changing the visible on-page text. Authored as a simple key/value table (on-page label → replacement label), one row per label pair. It has no variations and produces no visible markup.
 
 ## Authoring instructions
 

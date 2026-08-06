@@ -16,6 +16,23 @@ with open(TECH_SPEC_LINKS_PATH, "r", encoding="utf-8") as f:
 FN_DEF_RE = re.compile(r'^\[\^([\w-]+)\]:[ \t]*(.+)$', re.MULTILINE)
 FN_REF_RE = re.compile(r'\[\^([\w-]+)\]')
 
+# The "#autoplay alone" gotcha sentence recurs (with minor per-block wording)
+# across every video-authoring Notes bullet — flag it visually wherever it
+# appears rather than leaving it as plain bullet text, since it's the most
+# common way authors accidentally break scroll-triggered video playback.
+AUTOPLAY_WARNING_RE = re.compile(
+    r'Using <code>#autoplay</code> alone plays the video immediately on page load.*?frozen last frame\.',
+    re.DOTALL,
+)
+
+
+def highlight_autoplay_warning(html):
+    """Wrap the '#autoplay alone' gotcha sentence in a callout span so it
+    visually stands out inside its Notes bullet, post markdown conversion."""
+    return AUTOPLAY_WARNING_RE.sub(
+        lambda m: f'<span class="autoplay-warn">{m.group(0)}</span>', html
+    )
+
 
 def extract_footnotes(raw):
     """Pull out [^id]: definition lines (repo convention: a PR/commit link +
@@ -439,6 +456,7 @@ for fname in files:
     cleaned_raw = convert_example_sections(cleaned_raw, slug)
 
     html = markdown.markdown(cleaned_raw, extensions=["tables", "fenced_code", "sane_lists"])
+    html = highlight_autoplay_warning(html)
 
     mtime = os.path.getmtime(path)
     last_updated = datetime.datetime.fromtimestamp(mtime).strftime("%b %-d, %Y")

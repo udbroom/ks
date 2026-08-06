@@ -1,10 +1,6 @@
 # Plans Hero
 
-> **Quick summary:** A simple full-width hero banner — background image with a scrim, plus an overlaid text block (eyebrow, heading, body, CTA) — authored as one row with 2 cells (text, media). No variations. Some deployments support an optional focal-point line (e.g. `left, top`) below the image to control crop position; others always crop from center.
-
----
-
-A simple full-width hero banner: a background image with a dark scrim on one side, and a text block (eyebrow, heading, body copy, CTA) overlaid on top. Use it for a plans/pricing page header where you need a media-backed hero without any of the scroll animation used by the other hero blocks.
+> **Quick summary:** A simple full-width hero banner — background image with a scrim, plus an overlaid text block (eyebrow, heading, body, CTA) — authored as one row with 2 cells (text, media). Use it for a plans/pricing page header needing a media-backed hero without the scroll animation used by other hero blocks. No variations. Some deployments support an optional focal-point line (e.g. `left, top`) below the image to control crop position; others always crop from center.
 
 ## Authoring instructions
 

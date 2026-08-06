@@ -1,16 +1,10 @@
 # Section Metadata
 
 > **Quick summary:**
-> - A hidden key/value configuration table (never rendered visibly), placed at the bottom of a Section to control section-level behavior — not a visual block.
+> - A hidden key/value configuration table (never rendered visibly), placed at the bottom of a Section to control section-level behavior — not a visual block. Each row is a `key | value` pair, or `key | value1 | value2 | value3` for per-viewport values.
 > - Six recognized keys: `style`, `layout`, `background`, `masonry`, `anchor`, `images`.
-> - `style`/`layout` class values are organized further down into grouped tables by purpose (visual/structural, multi-block grid, bento, scroll-animation, single-block-only).
+> - `style`/`layout` class values are organized further down into grouped tables by purpose (visual/structural, multi-block grid, bento, scroll-animation, single-block-only). Not every key/class is available in every deployment — see the Availability notes.
 > - A dedicated "Cross-block interactions" section covers how other blocks react to specific classes — worth checking before you add a class expecting an effect elsewhere.
-
----
-
-A hidden configuration table (never rendered as visible content) placed at the bottom of a Section in the authoring doc. Authors use it to control section-level behavior — background media, layout/grid classes, masonry/grid spans, anchor IDs, and image compression hints — without touching code. Each row is a `key | value` pair (or `key | value1 | value2 | value3` for per-viewport values).
-
-Not every key or class value below is available everywhere this block is used — see the "Availability" notes. If a row or class doesn't seem to do anything, it may simply not be supported in that deployment.
 
 ## Authoring instructions
 
@@ -146,6 +140,7 @@ Multi-block grid example — 3 blocks arranged as an even 3-column grid, with sc
 - The column count on mobile is always effectively 1 (the grid collapses to a single column below the tablet breakpoint) regardless of which `-up` class you chose — the `-up` class only controls tablet/desktop column count. This is identical everywhere the block is used.
 - Key matching is case-insensitive and whitespace-trimmed (e.g. `Background` and `background` both work), but must otherwise match exactly — `back ground` will not.
 - `style` and `layout` are functionally identical (both call the same class-toggling code); they exist as two keys purely so authors can separate concerns.
+- Video gotcha (`background` key): pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the background video to autoplay only while scrolled into view (instead of finishing during page load), the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time the section is visible it has already finished, so visitors just see its frozen last frame.
 
 ### Cross-block interactions
 

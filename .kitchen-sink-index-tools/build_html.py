@@ -77,6 +77,20 @@ html = """<!DOCTYPE html>
     color: #6e6e73;
     margin-top: 1px;
   }
+  .block-snippet {
+    font-size: 11.5px;
+    color: #6e6e73;
+    margin-top: 3px;
+    line-height: 1.4;
+  }
+  .block-item.active .block-snippet { color: #ffd6d3; }
+  mark.search-hit {
+    background: #ffe38a;
+    color: #1d1d1f;
+    border-radius: 2px;
+    padding: 0 1px;
+  }
+  .block-item.active mark.search-hit { background: #fff3c4; }
   #main {
     flex: 1;
     overflow-y: auto;
@@ -125,6 +139,19 @@ html = """<!DOCTYPE html>
     border-top: 1px solid #eee;
   }
   .doc-content h2:first-of-type { border-top: none; padding-top: 0; }
+  .autoplay-warn {
+    background: #fff4e5;
+    color: #8a4b00;
+    font-weight: 600;
+    padding: 1px 5px;
+    border-radius: 4px;
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .autoplay-warn code {
+    background: rgba(138, 75, 0, 0.12);
+    color: #8a4b00;
+  }
   .doc-content p, .doc-content li { font-size: 14px; line-height: 1.65; color: #2c2c2e; }
   .doc-content table {
     border-collapse: collapse;
@@ -425,7 +452,7 @@ html = """<!DOCTYPE html>
     <h1>Kitchen Sink Blocks</h1>
     <div class="count" id="block-count"></div>
   </div>
-  <input id="search" type="text" placeholder="Search blocks...">
+  <input id="search" type="text" placeholder="Search blocks or content...">
   <div id="block-list"></div>
 </div>
 
@@ -444,17 +471,58 @@ const countEl = document.getElementById('block-count');
 let activeSlug = null;
 let historyStack = []; // stack of slugs, last = current
 
+function escapeHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+function escapeRegExp(s) {
+  return s.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\\\$&');
+}
+// Escape then highlight a plain-text string against the search query.
+function highlightPlain(text, q) {
+  const escaped = escapeHtml(text || '');
+  if (!q) return escaped;
+  const re = new RegExp('(' + escapeRegExp(q) + ')', 'ig');
+  return escaped.replace(re, '<mark class="search-hit">$1</mark>');
+}
+// Pull a short snippet of raw content around the first match, so a hit that
+// only occurs in the body (not the title) still shows where it landed.
+function getSnippet(raw, q, radius) {
+  if (!raw || !q) return '';
+  const idx = raw.toLowerCase().indexOf(q);
+  if (idx === -1) return '';
+  const start = Math.max(0, idx - radius);
+  const end = Math.min(raw.length, idx + q.length + radius);
+  let snippet = raw.slice(start, end).replace(/\s+/g, ' ').trim();
+  if (start > 0) snippet = '…' + snippet;
+  if (end < raw.length) snippet = snippet + '…';
+  return snippet;
+}
+
 function renderList(filter) {
   const q = (filter || '').toLowerCase().trim();
   const filtered = BLOCKS.filter(b =>
-    !q || b.title.toLowerCase().includes(q) || b.summary.toLowerCase().includes(q) || b.slug.includes(q)
+    !q ||
+    b.title.toLowerCase().includes(q) ||
+    b.summary.toLowerCase().includes(q) ||
+    b.slug.includes(q) ||
+    (b.raw && b.raw.toLowerCase().includes(q))
   );
   countEl.textContent = filtered.length + ' of ' + BLOCKS.length + ' blocks';
-  listEl.innerHTML = filtered.map(b => `
-    <div class="block-item${b.slug === activeSlug ? ' active' : ''}" data-slug="${b.slug}">
-      <div class="block-title">${b.title}</div>
-    </div>
-  `).join('');
+  listEl.innerHTML = filtered.map(b => {
+    const titleHtml = highlightPlain(b.title, q);
+    const titleMatches = q && b.title.toLowerCase().includes(q);
+    let snippetHtml = '';
+    if (q && !titleMatches) {
+      const snippet = getSnippet(b.raw, q, 40);
+      if (snippet) snippetHtml = `<div class="block-snippet">${highlightPlain(snippet, q)}</div>`;
+    }
+    return `
+      <div class="block-item${b.slug === activeSlug ? ' active' : ''}" data-slug="${b.slug}">
+        <div class="block-title">${titleHtml}</div>
+        ${snippetHtml}
+      </div>
+    `;
+  }).join('');
   listEl.querySelectorAll('.block-item').forEach(el => {
     el.addEventListener('click', () => selectBlock(el.dataset.slug));
   });
@@ -503,6 +571,43 @@ function selectBlock(slug, opts) {
   wireCrossRefLinks();
   wireFootnotes(b);
   renderNavBar();
+  wrapMatches(mainEl.querySelector('.doc-content'), searchEl.value);
+}
+
+// Wrap every occurrence of the search query in <mark> within a text-node
+// walk, so table cells, headings, links, etc. keep their structure intact.
+function wrapMatches(root, q) {
+  if (!root) return;
+  const query = (q || '').toLowerCase().trim();
+  if (!query) return;
+  const re = new RegExp('(' + escapeRegExp(query) + ')', 'ig');
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
+  const nodes = [];
+  let n;
+  while ((n = walker.nextNode())) {
+    if (re.test(n.nodeValue)) nodes.push(n);
+    re.lastIndex = 0;
+  }
+  nodes.forEach(node => {
+    const frag = document.createElement('span');
+    frag.innerHTML = node.nodeValue.replace(re, '<mark class="search-hit">$1</mark>');
+    const parent = node.parentNode;
+    while (frag.firstChild) parent.insertBefore(frag.firstChild, node);
+    parent.removeChild(node);
+  });
+}
+
+// Re-render the open block's content from its clean source and re-apply
+// highlighting — keeps live typing from stacking marks on top of marks.
+function refreshContentHighlight() {
+  const contentEl = mainEl.querySelector('.doc-content');
+  if (!contentEl || !activeSlug) return;
+  const b = BLOCKS.find(x => x.slug === activeSlug);
+  if (!b) return;
+  contentEl.innerHTML = b.html;
+  wireCrossRefLinks();
+  wireFootnotes(b);
+  wrapMatches(contentEl, searchEl.value);
 }
 
 // Footnote-style refs, e.g. `dark`[^dark], are a repo convention noting the
@@ -674,7 +779,10 @@ function wireCrossRefLinks() {
   });
 }
 
-searchEl.addEventListener('input', () => renderList(searchEl.value));
+searchEl.addEventListener('input', () => {
+  renderList(searchEl.value);
+  refreshContentHighlight();
+});
 
 renderList('');
 if (BLOCKS.length) selectBlock(BLOCKS[0].slug);

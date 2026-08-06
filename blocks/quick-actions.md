@@ -1,10 +1,6 @@
 # Quick Actions
 
-> **Quick summary:** A section header (heading + optional CTA) followed by a responsive grid of image tiles that link out to tools or pages, showing 2 tiles per row on mobile, 3 on tablet, and 6 on desktop. Authored as an optional 1-cell header row, then one row per tile (link cell + image cell). There are no author-facing variation classes — the grid's column count is set automatically by JS. Note: the `two-up`/`three-up`/`six-up` classes this block applies internally are unrelated to Section Metadata's `product-grid` multi-block layout system.
-
----
-
-A section header (heading + optional CTA) followed by a responsive grid of image tiles that link out to individual tools or pages — e.g. a "Quick actions" panel of shortcuts like "Compress a PDF," "Convert to Word," etc. The grid automatically shows 2 tiles per row on mobile, 3 on tablet, and 6 on desktop.
+> **Quick summary:** A section header (heading + optional CTA) followed by a responsive grid of image tiles that link out to tools or pages (e.g. a "Quick actions" panel of shortcuts like "Compress a PDF," "Convert to Word"), showing 2 tiles per row on mobile, 3 on tablet, and 6 on desktop. Authored as an optional 1-cell header row, then one row per tile (link cell + image cell). There are no author-facing variation classes — the grid's column count is set automatically by JS. Note: the `two-up`/`three-up`/`six-up` classes this block applies internally are unrelated to Section Metadata's `product-grid` multi-block layout system.
 
 ## Authoring instructions
 

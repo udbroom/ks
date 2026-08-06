@@ -1,10 +1,6 @@
 # Iframe
 
-> **Quick summary:** Embeds an external page inline in a responsive (16:9 by default) `<iframe>`. Authored as a single row/cell containing one link — its `href` becomes the iframe `src`; any other content in the cell is ignored. The only variation is passing an extra class in parentheses after the block name (e.g. `iframe-calendar`, which switches to a fixed 1500px height for scheduling widgets); there are no other author-facing variations.
-
----
-
-Embeds an external page (a scheduling widget, calendar, third-party tool, etc.) inline on the page inside a responsive, 16:9-by-default `<iframe>`. Use it when you need to drop a link to another web app or page directly into the page flow instead of just linking out to it.
+> **Quick summary:** Embeds an external page (scheduling widget, calendar, third-party tool, etc.) inline in a responsive (16:9 by default) `<iframe>`, for when you need it directly in the page flow rather than just linking out. Authored as a single row/cell containing one link — its `href` becomes the iframe `src`; any other content in the cell is ignored. The only variation is passing an extra class in parentheses after the block name (e.g. `iframe-calendar`, which switches to a fixed 1500px height for scheduling widgets); there are no other author-facing variations.
 
 ## Authoring instructions
 
