@@ -17,3 +17,9 @@ Documentation for Milo/Kitchen Sink blocks — one Markdown file per block, desc
 python3 .kitchen-sink-index-tools/convert.py
 python3 .kitchen-sink-index-tools/build_html.py
 ```
+
+## Deploying to Vercel
+
+The repo is a static site with no build step. `vercel.json` rewrites `/` to `/kitchen-sink-index.html` since that file isn't named `index.html`.
+
+To deploy: import the repo in the Vercel dashboard, choose the "Other" framework preset (no build command needed), and deploy.
