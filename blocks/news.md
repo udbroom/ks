@@ -51,3 +51,6 @@ With the quiet variation:
 - Card body text is clamped to 3 lines via CSS — longer copy is truncated with an ellipsis, not scrollable, so keep summaries short.
 - There is no explicit handling for images placed inside an item's body (only the header row's icon is handled) — an image added inside an item cell isn't actively broken, but it won't be positioned or styled by this block.
 - The `two-up`/`three-up`/`four-up`/`six-up` classes mentioned above are applied automatically by this block's own code to its own internal item grid — they're unrelated to [Section Metadata](./section-metadata.md)'s `product-grid` + `-up` multi-block layout system (which arranges separate blocks side by side in a section). Adding `product-grid, two-up` to this block's Section Metadata does not change how many items per row News shows; only the item count does.
+- Only some deployments correctly render a standalone "read more" link outside the `quiet` variant; in others, a link-only paragraph in a non-`quiet` item can stop the block partway through, leaving later items undecorated. If items after the first with a "read more" link look wrong, try the `quiet` variant.[^standalone-link-fix]
+
+[^standalone-link-fix]: [#6360](https://github.com/adobecom/milo/pull/6360) — 2026-07

@@ -8,7 +8,7 @@ The block is authored as **two rows**: a media row and a text row.
 
 | Row | Content |
 |---|---|
-| Row 1 (media) | One cell per card, each containing one image or video for that card. In the default two-card layout, use exactly two cells: Cell 1 = media for Card 1 (the large "overlay" card), Cell 2 = media for Card 2 (the smaller "stacked" card). With the `featured` variant (where available — see Variations), use only **one** cell. |
+| Row 1 (media) | One cell per card, each containing one image or video for that card. In the default two-card layout, use exactly two cells: Cell 1 = media for Card 1 (the large "overlay" card), Cell 2 = media for Card 2 (the smaller "stacked" card). With the `featured` variant (where available — see Variations), use only **one** cell. On a `card-stacked` card, you can add a **second** image or video to the same cell: the first item becomes a small icon badge in the corner of the media (e.g. an app icon), and the second becomes the card's main media. |
 | Row 2 (text) | One cell per card, matching the media row's cell count, each containing that card's text: a heading (any level) and/or a bold paragraph (bold text becomes a `title`-styled line rather than a button), plus body copy. Cell 1 pairs with Card 1's media, Cell 2 with Card 2's. |
 
 If either row is missing, or the two rows don't line up, the block's decoration logic bails out silently and nothing renders — always author matching row/cell structure for whichever variant you're using.
@@ -78,5 +78,20 @@ Featured + equal pair (hero card followed by a matched two-up row, where the exp
 - Supports Milo's mobile/tablet/desktop content-override rows (see [rich-content.md](./rich-content.md)'s Notes for how that pattern works) — a viewport-delimiter row can override just one card's media or text while leaving the other card's content inherited from the previous viewport.
 - Where the `featured` variant is available, it only assigns a card type to the first media/text cell pair. If you accidentally author a second media/text cell pair alongside `featured`, that second card gets an invalid/blank card-type class and won't render its overlay/stacked styling correctly — keep `featured` blocks to exactly one media cell + one text cell.
 - `reverse`/`equal`/`featured` now work correctly together with mobile/tablet/desktop viewport-override rows[^viewport-fix] — previously, combining a variation class with viewport overrides could silently fall back to the default card layout instead of applying the variant, since the code checked the wrong element's class list for viewport-override content. If you saw a variant "not take" on a viewport-override authored block before, it should now.
+- `card-stacked` icon badge[^icon-badge]: only applies when the media cell has **two** images/videos — with one, the card renders as before. The icon is meant for small app/product marks (an SVG works well here since it's federated automatically), sized and positioned in the corner regardless of what you use for the main media beside it.
 
 [^viewport-fix]: [`c025f84`](https://github.com/adobecom/milo/commit/c025f84) — Ratko Zagorac, 2026-08-07
+[^icon-badge]: [#6468](https://github.com/adobecom/milo/pull/6468) — Ratko Zagorac, 2026-08-19
+
+## GTK
+
+### Video Flags and Attributes
+
+Add one or more of these to the end of the video's link URL, after a `#` (combine more than one with `|`, e.g. `#autoplay|viewportplay`):
+
+| Flag | Effect |
+| --- | --- |
+| `autoplay` | Plays automatically, muted, and loops. Used alone, playback starts as soon as the page loads — if the video isn't visible yet, it can finish before a visitor scrolls to it. Pair with `viewportplay` to avoid that. |
+| `autoplay1` | Same as `autoplay`, but plays once instead of looping. |
+| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay\|viewportplay`) so it doesn't finish before becoming visible. |
+| `hoverplay` | No autoplay — instead, the video is muted and plays only while a visitor hovers over or focuses it, pausing otherwise. |

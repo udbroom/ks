@@ -9,8 +9,8 @@ This block has a **strict row order** — it always expects exactly 8 rows, in t
 | Row | Default (4 slides) | With `slides-3` |
 |---|---|---|
 | 1 — Header | One cell containing (in order): an optional eyebrow line, a heading (`h1`–`h6`), body paragraph(s), and a CTA paragraph with an inline icon image + link, e.g. `![icon](https://www.adobe.com/federal/assets/svgs/experience-cloud-logo.svg)` followed by `[Explore now \| Explore Creative Cloud plans](https://...)`. Same `text \| aria-label` pipe convention as Floating CTA: text before `\|` is shown, text after becomes the link's `aria-label`. | Same |
-| 2 — Image grid, row A | Up to 5 cells, each with one image — the "top" image for parallax columns 1–5. | Up to 3 cells — the "top" image for columns 1–3. |
-| 3 — Image grid, row B | Up to 5 cells, each with one image — stacks under the matching column from row 2. Columns 2 and 4 automatically get a 3rd image cloned from carousel slide 2's and slide 4's image — don't add a 3rd image yourself for those columns. | Up to 3 cells, stacks under row 2's columns. Columns 1 and 3 automatically get a 3rd image cloned from carousel slide 1's and slide 3's image instead. |
+| 2 — Image grid, row A | Up to 5 cells, each with one image — the "top" image for parallax columns 1–5. | Up to 3 cells, image or video — the "top" media for columns 1–3[^slides-3-video]. |
+| 3 — Image grid, row B | Up to 5 cells, each with one image — stacks under the matching column from row 2. Columns 2 and 4 automatically get a 3rd image cloned from carousel slide 2's and slide 4's image — don't add a 3rd image yourself for those columns. | Up to 3 cells, stacks under row 2's columns. Columns 1 and 3 automatically get a 3rd image cloned from carousel slide 2's and slide 3's image instead[^slides-3-video].|
 | 4 — Image grid, row C | *(not used — only 2 grid rows in the default layout)* | Up to 3 cells — a third stacked image row per column (the default layout only has 2 grid rows; `slides-3` adds this one). |
 | 4 (default) / 5 (`slides-3`) — Carousel header | One cell, text only (no image) — the small heading shown above the horizontal carousel, e.g. "Explore what's new." This row is identified by *not* having an image, so keep it image-free. | Same, just one row later. |
 | 5–8 (default) / 6–8 (`slides-3`) — Carousel slides | Exactly **4** slide rows. | Exactly **3** slide rows. |
@@ -55,6 +55,24 @@ Add modifier classes to the block name cell (these are read from the block's own
 - The block is heavily scroll/animation driven (CSS `animation-timeline`), with full `prefers-reduced-motion` fallbacks and a `@supports not (animation-timeline: view())` fallback for browsers without scroll-driven animation support (e.g. Firefox) — no extra authoring is needed for these, they're automatic.
 - On mobile, video slides autoplay/rewind based on scroll position via `IntersectionObserver`; this is automatic once a video is present in a slide's media cell.
 - Video gotcha: pair the video link with its poster image as two adjacent cells in the same row — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the scroll-triggered play/pause above to actually kick in, the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it scrolls into view it has already finished, so visitors just see its frozen last frame.
-- The first slide gets a unique, more descriptive `aria-label` (built from its link text) since assistive tech announces it as the start of the carousel; the rest just get "N of &lt;slide count&gt;."
+- With `slides-3`[^slides-3-video], video in either the image grid or the carousel slides autoplays purely on scroll position (playing once ~50% visible, pausing when it scrolls out) — the `#autoplay|viewportplay` hash convention above isn't needed for these. This only kicks in for videos **5.1 seconds or shorter**; longer videos are left paused on their poster frame instead of autoplaying. Reduced-motion visitors never get autoplay here either way.
+- In most deployments, a slide's accessible name is built from its own eyebrow and heading text — there's no special first-slide treatment and no generic "N of &lt;slide count&gt;" announcement. In one deployment the older behavior remains: the first slide gets a distinct label built from its link text, and every other slide is announced only as "N of &lt;slide count&gt;." Either way this is automatic. A slide whose link opens a modal is also announced as a button rather than a link in most deployments; one deployment always announces it as a link.[^a11y-label]
 
 [^slides-3]: [#6406](https://github.com/adobecom/milo/pull/6406) — Denys Fedotov, 2026-08-05
+[^slides-3-video]: [#6469](https://github.com/adobecom/milo/pull/6469) — Ryan Clayton, 2026-08-20
+[^a11y-label]: [#6177](https://github.com/adobecom/milo/pull/6177) — 2026-06 (reached this branch's other deployment 2026-08-25)
+
+## GTK
+
+### Video Flags and Attributes
+
+Add one or more of these to the end of the video's link URL, after a `#` (combine more than one with `|`, e.g. `#autoplay|viewportplay`):
+
+| Flag | Effect |
+| --- | --- |
+| `autoplay` | Plays automatically, muted, and loops. Used alone, playback starts as soon as the page loads — if the video isn't visible yet, it can finish before a visitor scrolls to it. Pair with `viewportplay` to avoid that. |
+| `autoplay1` | Same as `autoplay`, but plays once instead of looping. |
+| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay\|viewportplay`) so it doesn't finish before becoming visible. |
+| `hoverplay` | No autoplay — instead, the video is muted and plays only while a visitor hovers over or focuses it, pausing otherwise. |
+
+Note: with `slides-3`, video autoplays purely from scroll position and doesn't need these flags at all (see Notes above) — this table applies to the default (non-`slides-3`) carousel/grid video.

@@ -44,4 +44,19 @@ This block has no author-facing variation classes. All visual states (piled card
 - Video gotcha (the "usual video hash options" above): pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the video to autoplay only while scrolled into view (instead of finishing during page load), the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time the card scrolls into view it has already finished, so visitors just see its frozen last frame.
 - The animation and pinned-eyebrow behavior are automatically skipped for users with `prefers-reduced-motion` set, and inert for browsers without scroll-driven animation support (both are handled in code, no authoring needed).
 - **[Section Metadata](./section-metadata.md) `layout`/`style` interaction:** adding `rounded corners bottom` (→ class `rounded-corners-bottom`) to this section's Section Metadata `layout`/`style` row rounds the bottom corners of the hero's background. This block's own CSS deliberately suppresses that rounding if the section *also* carries `parallax move up fast` or `parallax garage door reveal` (both part of Milo's shared scroll-transition system) — combining them would clip the background during the scroll animation, so don't expect rounded corners if either of those is also present.
-- In an expanded version of this block, once a card finishes settling into the final grid it's tagged with a class that gives it a visible border in dark-mode sections and makes its tile background transparent; this expanded version also uses a slightly taller card aspect ratio. In a simpler deployment, settled cards get no dark-mode border/transparency treatment and use a slightly shorter card aspect ratio. Either way this is purely visual — the authoring contract (rows/cells/content) is identical.
+- In dark-mode sections, one deployment gives feature-card tiles a transparent background and dims the body text once scrolled into place; the other deployments have no dark-mode-specific treatment for these cards. (An earlier per-card corner-rounding effect tied to this was removed and no longer applies anywhere.) The deployment with the dark-mode treatment also uses a slightly taller card aspect ratio; the others use a slightly shorter one. Either way this is purely visual — the authoring contract (rows/cells/content) is identical.[^offer-hero-bugfix]
+
+[^offer-hero-bugfix]: [#6554](https://github.com/adobecom/milo/pull/6554) — 2026-08-24
+
+## GTK
+
+### Video Flags and Attributes
+
+Add one or more of these to the end of the video's link URL, after a `#` (combine more than one with `|`, e.g. `#autoplay|viewportplay`):
+
+| Flag | Effect |
+| --- | --- |
+| `autoplay` | Plays automatically, muted, and loops. Used alone, playback starts as soon as the page loads — if the video isn't visible yet, it can finish before a visitor scrolls to it. Pair with `viewportplay` to avoid that. |
+| `autoplay1` | Same as `autoplay`, but plays once instead of looping. |
+| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay\|viewportplay`) so it doesn't finish before becoming visible. |
+| `hoverplay` | No autoplay — instead, the video is muted and plays only while a visitor hovers over or focuses it, pausing otherwise. |

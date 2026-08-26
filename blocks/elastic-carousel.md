@@ -49,3 +49,18 @@ The only behavioral change driven by authoring context is document direction: on
 - SVG images (icon or media) are automatically rewritten to Milo's federated (shared, cross-site) asset URL; no special authoring is needed beyond using a normal image.
 - Video slides only get their real playback, autoplay/rewind-on-hover, and mobile auto-play-in-view behavior if the media cell resolves to an actual video element via Milo's standard video-link authoring — a plain video *file link* pasted the normal Milo way is what triggers this; a video embedded via an unsupported method will just render as a static link/image.
 - Video gotcha: the poster image (shown in the example above) must sit immediately next to the video link — Milo grabs the poster from whichever image is adjacent to the link, and won't show one otherwise. For the mobile auto-play-in-view behavior above to actually kick in, the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it scrolls into view it has already finished, so visitors just see its frozen last frame.
+
+## GTK
+
+### Video Flags and Attributes
+
+Add one or more of these to the end of the video's link URL, after a `#` (combine more than one with `|`, e.g. `#autoplay|viewportplay`):
+
+| Flag | Effect |
+| --- | --- |
+| `autoplay` | Plays automatically, muted, and loops. Used alone, playback starts as soon as the page loads — if the video isn't visible yet, it can finish before a visitor scrolls to it. Pair with `viewportplay` to avoid that. |
+| `autoplay1` | Same as `autoplay`, but plays once instead of looping. |
+| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay\|viewportplay`) so it doesn't finish before becoming visible. |
+| `hoverplay` | No autoplay — instead, the video is muted and plays only while a visitor hovers over or focuses it, pausing otherwise. |
+
+**Flag this if you're troubleshooting:** unlike most blocks here, Elastic Carousel drives its own mobile-autoplay and desktop-hover playback in its own code (see Notes above), independent of these flags — the `#autoplay|viewportplay` hash mentioned there may not be strictly required for that behavior to work. Worth confirming against current code before relying on it if a slide's autoplay/hover isn't behaving as documented.

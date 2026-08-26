@@ -36,6 +36,8 @@ This block has no author-facing modifier classes — there's nothing to add to t
 - The total scroll distance scales with how many items you author (roughly one viewport height plus ~200px per item) — more items means more scrolling before the panel releases, and there's no per-instance way to shorten it.
 - Category and item rows can be freely interleaved in any order or count — the code just walks rows top to bottom, treating any 1-cell row as a new category label and any 2+-cell row with a non-empty name as an item filed under whichever category label came most recently before it.
 - Only one image is required per item; add a second only when you want the small icon badge over the main image. The icon is always whichever image appears first in the row, so order icon before main media if you use both.
-- Media cells only read `<picture>` elements — video links are not supported here and won't display.
+- Media cells only read `<picture>` elements — video links are not supported here and won't display. The icon is an exception: it can also be authored as a plain SVG link rather than an inserted image, and is still picked up as the icon. The main media image still has to be an inserted `<picture>`.[^svg-icon]
 - Backgrounds are always heavily blurred and cropped to cover automatically; there's no authoring control over that treatment.
 - Supports Milo's mobile/tablet/desktop content-override rows (see [rich-content.md](./rich-content.md)'s Notes for how that pattern works) — a viewport-delimiter row can give a different header, category set, or item lineup per breakpoint while inheriting anything left unchanged from the previous viewport.
+
+[^svg-icon]: Suhani Jain, 2026-08-19–24 ("VQA changes for roller carousel")

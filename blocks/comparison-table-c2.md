@@ -51,3 +51,6 @@ Buttons in the CTA group follow standard Milo convention: wrap link text in `**b
 - Column alignment between the header row and every feature row is purely positional — cell 2 of every row must always refer to the same plan, cell 3 to the next, etc. Adding/removing a plan column requires updating every single row in the table.
 - A cell containing only `-` (or only dashes) is treated as "empty/not included" and is visually hidden with only a short line drawn — do not use `-` for an actual hyphenated value.
 - No block-specific `dark` class check exists in this block's JS; the `.dark` CSS rules present are the standard Milo section-level dark theme and apply automatically when the enclosing section is set to dark, not something toggled via the block name.
+- Only some deployments announce feature-icon cells (checkmark/close) to screen readers with a "primary feature" / "not a feature" label; where that isn't available, only the dash/empty cells get an announced label and icon-only cells may have no accessible name.[^a11y-icons]
+
+[^a11y-icons]: [#6416](https://github.com/adobecom/milo/pull/6416) — 2026-07

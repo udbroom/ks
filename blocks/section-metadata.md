@@ -15,7 +15,7 @@ Section Metadata is a table where **the first cell of each row is a key name** a
 | `style` | One or more CSS class names, comma-separated (e.g. `divider, rounded-corners`), applied directly to the containing section. Put 1 cell to apply the same classes at all breakpoints, or 2 cells (mobile \| tablet+desktop) or 3 cells (mobile \| tablet \| desktop) to swap which classes are active per breakpoint (classes are added/removed live as the viewport changes). See "Which values go under which key" and "Multi-block grids" below. |
 | `layout` | Same mechanism and cell structure as `style` (also class names, same 1/2/3-cell viewport logic) — functionally identical, just a separate key so authors can organize layout-only classes separately from cosmetic ones if they want. Using either accomplishes the same thing; don't use both on the same section. |
 | `background` | One cell per background layer. Each cell holds either an image, a video link, or plain color text (e.g. `#1E1E1E`). 1 cell = same background at all sizes. 2 cells = mobile \| tablet+desktop. 3 cells = mobile \| tablet \| desktop. Adds a background-present flag to the section and inserts an absolutely-positioned background layer behind the content. For an image cell, a second line of text under the image (e.g. `left, top`) sets its focal point/object-position. |
-| `masonry` | Defines the grid span of each direct child block in the section, for use with `bento` or masonry grids. Value is written as one line per child block, `span N` (or comma-separated spans per row for multi-column masonry rows), e.g.: line 1 `span 8`, line 2 `span 4, span 4` — also accepts `full width`/`half width`. Use 1 cell for a fixed layout, or 2–3 cells for mobile/tablet/desktop variants (same viewport rules as `style`). Adds a masonry-layout class to the section. Like `product-grid`, this works with *any* block placed in the section — it's not tied to a specific one. It's most commonly used to arrange a mix of differently-sized promo/card blocks ([Base Card](./base-card.md), [Explore Card](./explore-card.md), [Product Marquee Grid](./product-marquee-grid.md), and similar) into an uneven bento-style layout rather than a strict even grid. |
+| `masonry` | Defines the grid span of each direct child block in the section, for use with `bento` or masonry grids. Value is written as one line per child block, `span N` (or comma-separated spans per row for multi-column masonry rows), e.g.: line 1 `span 8`, line 2 `span 4, span 4` — also accepts `full width`/`half width`. Use 1 cell for a fixed layout, or 2–3 cells for mobile/tablet/desktop variants (same viewport rules as `style`). Adds a masonry-layout class to the section. Like `product-grid`, this works with *any* block placed in the section — it's not tied to a specific one. It's most commonly used to arrange a mix of differently-sized promo/card blocks ([Base Card](./base-card.md), [Explore Card](./explore-card.md), [Product Marquee Grid](./product-marquee-grid.md), and similar) into an uneven bento-style layout rather than a strict even grid. Pairing `masonry` with `parallax stagger ltr`/`rtl` (see the scroll-animation classes below) staggers the scroll-in of the masonry cards, timed by their position within each row. |
 | `anchor` | A single word/phrase used as the section's jump-to `id` (lowercased, spaces converted to hyphens) — pair with [Rich Content](./rich-content.md)'s `jump-link` variant or any in-page anchor link. |
 | `images` | A comma-separated list of picture-optimization hints applied to every `<picture>` in the section: a resolution multiplier (`1x`, `2x`, `3x`) and/or an encoding hint (`photography` → AVIF, `product` → WebP). Use `off` to explicitly skip this optimization. |
 
@@ -64,6 +64,7 @@ Any class name is technically accepted (it's just added to the section), but onl
 | --- | --- | --- |
 | `bento` | Enables a bento-style grid layout; several other blocks (e.g. [Explore Card](./explore-card.md), [Rich Content](./rich-content.md)'s `grid-full-width`) have extra CSS for sections carrying this class. | Most deployments |
 | `bento` + `stack-mobile` (together) | Loads a sticky, depth-scaled mobile card-stack scroll animation for a bento section's child cards (e.g. [Explore Card](./explore-card.md)) with a [Rich Content](./rich-content.md) title pinned above it. Only active below the 768px breakpoint; respects reduced-motion. | Only some deployments |
+| `bento` + `body-color-solid`[^body-color-solid] (optionally with `dark` too) | For [Explore Card](./explore-card.md) content in a bento section: keeps body text at full/solid color instead of the dimmer color bento sections use by default (see Notes below). | Only some deployments |
 
 **Scroll-animation family** — part of Milo's shared scroll-driven section-transition system; this block mostly just passes these through rather than implementing the animation itself (see "Cross-block interactions" below for what actually reacts to them):
 
@@ -140,7 +141,21 @@ Multi-block grid example — 3 blocks arranged as an even 3-column grid, with sc
 - The column count on mobile is always effectively 1 (the grid collapses to a single column below the tablet breakpoint) regardless of which `-up` class you chose — the `-up` class only controls tablet/desktop column count. This is identical everywhere the block is used.
 - Key matching is case-insensitive and whitespace-trimmed (e.g. `Background` and `background` both work), but must otherwise match exactly — `back ground` will not.
 - `style` and `layout` are functionally identical (both call the same class-toggling code); they exist as two keys purely so authors can separate concerns.
+- Where available, `bento` sections now dim [Explore Card](./explore-card.md) body text by default (a subtler, lower-contrast color than the heading)[^body-color-solid] — this changed recently, so a bento section that looked right before may now show dimmer body copy than intended. Add `body-color-solid` alongside `bento` (and `dark`, if also used) to keep the body text at full color instead.
 - Video gotcha (`background` key): pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the background video to autoplay only while scrolled into view (instead of finishing during page load), the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time the section is visible it has already finished, so visitors just see its frozen last frame.
+
+## GTK
+
+### Video Flags and Attributes
+
+Add one or more of these to the end of the video's link URL, after a `#` (combine more than one with `|`, e.g. `#autoplay|viewportplay`):
+
+| Flag | Effect |
+| --- | --- |
+| `autoplay` | Plays automatically, muted, and loops. Used alone, playback starts as soon as the page loads — if the video isn't visible yet, it can finish before a visitor scrolls to it. Pair with `viewportplay` to avoid that. |
+| `autoplay1` | Same as `autoplay`, but plays once instead of looping. |
+| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay\|viewportplay`) so it doesn't finish before becoming visible. |
+| `hoverplay` | No autoplay — instead, the video is muted and plays only while a visitor hovers over or focuses it, pausing otherwise. |
 
 ### Cross-block interactions
 
@@ -169,3 +184,5 @@ These rows aren't processed by Section Metadata's own code — the other block r
 | `tab`, `tab-background`, `link`, `deeplink` | [Tabs](./tabs.md) | Attaches the whole section as a tab panel; see [tabs.md](./tabs.md). |
 | `custom-hide` | [Floating CTA](./floating-cta.md) | A CSS selector — hides the floating CTA while the matching element is in view. |
 | `expand` | [Comparison Table C2](./comparison-table-c2.md) | `all`, or a comma-separated list of 1-based sub-table numbers — controls which `+++`-separated sub-tables render expanded by default. |
+
+[^body-color-solid]: [#6505](https://github.com/adobecom/milo/pull/6505) — Ryan Clayton, 2026-08-19

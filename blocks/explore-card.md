@@ -19,14 +19,15 @@ Variations are authored as modifier classes appended to the block name, e.g. `Ex
 | Variation | Effect | How to author it |
 |---|---|---|
 | `dark`[^dark] | Switches the text color and background scrim tint for use on dark-themed pages/sections. | "Explore Card (dark)" |
+| `center` | Centers the card's text content (icon/heading/body) both horizontally and as centered text, instead of the default left-aligned layout. | "Explore Card (center)" |
+| `show-link` | Keeps the authored link text visible as a small standalone label, instead of hiding it, for when you want an explicit "Learn more" caption in addition to the whole card being clickable. | "Explore Card (show-link)" |
 
 [^dark]: [#6219](https://github.com/adobecom/milo/pull/6219) — Rares Munteanu, 2026-06-23
 
+The background cell also supports stacking 1, 2, or 3 images/videos (each as its own paragraph) to show different media at mobile / tablet / desktop widths, optionally with a second line of text giving a focal point (e.g. `left, top`) to control image cropping. If the background cell has no image/video at all, its plain text is used as a solid background color instead.
+
 Some deployments of this block also support:
 
-- `center` — centers the card's text content (icon/heading/body) both horizontally and as centered text, instead of the default left-aligned layout.
-- `show-link` — keeps the authored link text visible as a small standalone label, instead of hiding it, for when you want an explicit "Learn more" caption in addition to the whole card being clickable.
-- A more advanced background pattern: stacking 1, 2, or 3 images/videos in the background cell (each as its own paragraph) to show different media at mobile / tablet / desktop widths, optionally with a second line of text giving a focal point (e.g. `left, top`) to control image cropping. If the background cell has no image/video at all, its plain text is used as a solid background color instead. Where this pattern isn't available, use a single image/video for all breakpoints.
 - Authoring **multiple icon images** in the content cell — they're automatically consolidated into one icon row shown side by side. In a simpler deployment of this block, only the first icon image is recognized and any additional ones are not consolidated, so stick to one icon there.
 - An advanced pattern (shared across several blocks) where inserting a row containing just `mobile-viewport`, `tablet-viewport`, or `desktop-viewport` (bare `mobile`/`tablet`/`desktop` still works but is a legacy fallback being phased out) lets you author entirely different content/background/foreground row sets per breakpoint, with later breakpoints inheriting anything left empty from the previous one. Breakpoint is screen width: with all three defined, mobile = below 768px, tablet = 768–1279px, desktop = 1280px and up; with only mobile-viewport + desktop-viewport, the split is at 1280px. Most authors won't need this.
 
@@ -55,3 +56,16 @@ Dark variation:
 - Video gotcha: pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the video to autoplay only while scrolled into view (rather than finishing during page load), the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it's visible it has already finished, so visitors just see its frozen last frame.
 - Dark-mode text/background contrast is standard Milo section-level theming (separate from the `dark` variation above) — it applies automatically when the enclosing section/page is set to dark, without any class on this block.
 - **[Section Metadata](./section-metadata.md) `layout`/`style` interaction:** when this block sits in a section whose Section Metadata `layout`/`style` row includes `bento`, extra spacing/sizing rules kick in automatically (padding, heading margins, and content-aspect-ratio adjustments tuned for a bento grid) — nothing extra to author on the card itself. In some deployments, adding `bento, stack-mobile` together on that Section Metadata row also turns a bento section's Explore Cards into a sticky, depth-scaled mobile card-stack scroll animation (with a [Rich Content](./rich-content.md) title pinned above it) below the 768px breakpoint — see [section-metadata.md](./section-metadata.md).
+
+## GTK
+
+### Video Flags and Attributes
+
+Add one or more of these to the end of the video's link URL, after a `#` (combine more than one with `|`, e.g. `#autoplay|viewportplay`):
+
+| Flag | Effect |
+| --- | --- |
+| `autoplay` | Plays automatically, muted, and loops. Used alone, playback starts as soon as the page loads — if the video isn't visible yet, it can finish before a visitor scrolls to it. Pair with `viewportplay` to avoid that. |
+| `autoplay1` | Same as `autoplay`, but plays once instead of looping. |
+| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay\|viewportplay`) so it doesn't finish before becoming visible. |
+| `hoverplay` | No autoplay — instead, the video is muted and plays only while a visitor hovers over or focuses it, pausing otherwise. |

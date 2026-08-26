@@ -38,4 +38,6 @@ Paired page Metadata (optional):
 
 - Because the block ignores its own table content, authors cannot preview nav changes by editing this block directly — changes must be made in the gnav source document referenced above.
 - If `gnav-source` metadata is missing and no `/gnav` document exists at the content root, the block logs an error (`window.lana`) and silently renders nothing.
-- The nav's federal domain is auto-detected from the current hostname (`.aem.page`/`.aem.live`/`.aem.reviews` vs. stage/prod), and can be overridden for testing with a `?fedsbranch=<branch>` query parameter (or `local` to point at `http://localhost:3000/federal`).
+- The nav's federal domain is auto-detected from the current hostname (`.aem.page`/`.aem.live`/`.aem.reviews` vs. stage/prod), and can be overridden for testing with a `?fedsbranch=<branch>` query parameter (or `local` to point at `http://localhost:3000/federal`) — this override only works on non-production environments (stage, local, PR previews); it's ignored on production.[^fedsbranch-prod]
+
+[^fedsbranch-prod]: [#6436](https://github.com/adobecom/milo/pull/6436) — 2026-07

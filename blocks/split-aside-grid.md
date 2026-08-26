@@ -26,6 +26,7 @@ In an expanded version of this block, a second variation is available:
 
 [^dark]: [#6219](https://github.com/adobecom/milo/pull/6219) — Rares Munteanu, 2026-06-23
 [^mobile-carousel]: [`60dcb44`](https://github.com/adobecom/milo/commit/60dcb44) — Ratko Zagorac, 2026-07-16
+[^reduced-motion]: [#6308](https://github.com/adobecom/milo/pull/6308) — 2026-07
 
 In a simpler deployment of this block, `mobile-carousel` is not available — mobile interaction is always the fly-off card-swipe stack, and `dark` is the only author-facing variation.
 
@@ -55,4 +56,18 @@ Where available, with the mobile carousel variant:
 - The mobile interaction is swipe-driven (pointer drag) with an aria-live region announcing "Slide X of Y" for screen-reader users; desktop is a plain click-to-expand accordion-style list — no author configuration changes this beyond the `mobile-carousel` variant where available, it's otherwise purely responsive.
 - Supports Milo's `mobile-viewport`/`tablet-viewport`/`desktop-viewport` content-override rows (same viewport-delimiter pattern as [Rich Content](./rich-content.md), including the 768px/1280px breakpoint split) if you need to vary slide content per breakpoint.
 - Where `mobile-carousel` is available, the code clones the first and last slide to create a seamless-loop illusion when swiping past the ends — this is automatic and requires no extra authoring.
+- Respects `prefers-reduced-motion`: swiping, using the arrow buttons, and navigating with the keyboard all skip the sliding/rotating animation and jump straight to the new slide instead.[^reduced-motion]
 - Video gotcha: pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the video to autoplay only while scrolled into view (instead of finishing during page load), the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it's visible it has already finished, so visitors just see its frozen last frame.
+
+## GTK
+
+### Video Flags and Attributes
+
+Add one or more of these to the end of the video's link URL, after a `#` (combine more than one with `|`, e.g. `#autoplay|viewportplay`):
+
+| Flag | Effect |
+| --- | --- |
+| `autoplay` | Plays automatically, muted, and loops. Used alone, playback starts as soon as the page loads — if the video isn't visible yet, it can finish before a visitor scrolls to it. Pair with `viewportplay` to avoid that. |
+| `autoplay1` | Same as `autoplay`, but plays once instead of looping. |
+| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay\|viewportplay`) so it doesn't finish before becoming visible. |
+| `hoverplay` | No autoplay — instead, the video is muted and plays only while a visitor hovers over or focuses it, pausing otherwise. |

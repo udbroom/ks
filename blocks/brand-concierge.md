@@ -45,6 +45,9 @@ Some deployments of this block also support:
 
 - A plain `dark` variant — a simpler dark-mode color scheme, distinct from and less elaborate than `c2-dark` (smaller heading sizes, plainer card borders). Where both are available, treat `c2-dark` as the richer/preferred dark option and `dark` as a lighter-touch alternative.
 - A `floating-input` variant, which adds a floating input bar (with the suggested-prompt cards shown as pills) that follows scroll, alongside the normal content — and a `floating-input-only` variant that renders just that floating bar, discarding the other rows the same way `floating-button-only` does. `floating-input-only` combined with `floating-anchor-hide` hides the bar once the visitor scrolls past the page's main content. A `floating-input-dark` modifier applies dark styling specifically to this floating input bar. Where this variant isn't available, use `floating-button` for a persistent scroll-following entry point instead.
+- A `marquee`[^marquee] variant, only in some deployments: restyles the block as a page-hero-style marquee. The Background row can hold up to 3 responsive images (mobile/tablet/desktop) instead of a single flat image/color, falling back to normal background handling if you only give one image. The Header row expects **two** headings — a short eyebrow line, then the main title — plus an optional subtitle paragraph, instead of the default single heading. Suggested-prompt cards drop the built-in sparkle icon prefix (an author-added card image still shows). Pair `marquee` with `dark` or `light` for a legibility gradient over the background image — without either, no overlay is applied.
+
+[^marquee]: [#6443](https://github.com/adobecom/milo/pull/6443) — Cody Lloyd, 2026-08-12
 
 ## Example
 

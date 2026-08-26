@@ -28,6 +28,7 @@ This block has no author-facing modifier classes (nothing added in parentheses a
 | `tablet-viewport`/`desktop-viewport` defined with fewer slides than `mobile-viewport` | That viewport only shows the slides you explicitly listed (slide *count* is not inherited, only cell content is). | Add the delimiter row and only as many slide rows as you want for that viewport. |
 | A slide's text or media cell left blank in `tablet-viewport`/`desktop-viewport` | That specific cell inherits content from the same-position slide in the next-lower defined viewport. | Leave the cell empty in the table for that slide. |
 | Reorder which slide plays first | Moves a given slide to the front of the rotation, across all viewports. | Add a **[Section Metadata](./section-metadata.md)** block in the same section with key `starting-marquee` and the 1-based slide number as the value. |
+| Keep a free-trial CTA visible on Korean-locale pages | Overrides the automatic hiding described in Notes below. | Add a **[Section Metadata](./section-metadata.md)** row with key `allow-kr-free-trial` set to `on`, or add `data-allow-kr-free-trial="true"` directly on the CTA link. |
 
 ## Example
 
@@ -49,4 +50,22 @@ This block has no author-facing modifier classes (nothing added in parentheses a
 - Because slide count can legitimately differ between mobile and desktop (see Variations table), double-check each viewport's nav-card strip after publishing — a mismatched count is easy to introduce by accident when only editing one viewport's rows.
 - The icon paragraph must link directly to an `.svg` file path; other image formats won't be picked up as the tab icon.
 - Video gotcha (media cell): pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the video to autoplay only while scrolled into view (instead of finishing during page load), the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it's visible it has already finished, so visitors just see its frozen last frame.
+- On Korean-locale pages, a CTA that reads like a free-trial offer (in English or Korean) is automatically dropped from the slide — this can be surprising if you authored a CTA that renders fine elsewhere but disappears on the `/kr` locale. To keep it, add a **[Section Metadata](./section-metadata.md)** row with key `allow-kr-free-trial` set to `on`.[^kr-free-trial]
 - **[Section Metadata](./section-metadata.md) `layout`/`style` interaction:** if you add `parallax move up fast` (→ class `parallax-move-up-fast`) to the Section Metadata `layout`/`style` row of the *section immediately after* this Router Marquee (e.g. so that next section animates up and covers the marquee as the visitor scrolls), Router Marquee's own CSS detects that adjacent class and repositions its bottom nav-card controls to make room. You only need to add the class to the following section — Router Marquee reacts to it automatically. This is part of Milo's shared scroll-animation system (see [section-metadata.md](./section-metadata.md)), not a Router Marquee variant of its own.
+
+[^kr-free-trial]: [#6242](https://github.com/adobecom/milo/pull/6242) — 2026-07
+
+## GTK
+
+### Video Flags and Attributes
+
+Add one or more of these to the end of the video's link URL, after a `#` (combine more than one with `|`, e.g. `#autoplay|viewportplay`):
+
+| Flag | Effect |
+| --- | --- |
+| `autoplay` | Plays automatically, muted, and loops. Used alone, playback starts as soon as the page loads — if the video isn't visible yet, it can finish before a visitor scrolls to it. Pair with `viewportplay` to avoid that. |
+| `autoplay1` | Same as `autoplay`, but plays once instead of looping. |
+| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay\|viewportplay`) so it doesn't finish before becoming visible. |
+| `hoverplay` | No autoplay — instead, the video is muted and plays only while a visitor hovers over or focuses it, pausing otherwise. |
+
+**Doesn't apply here the normal way:** Router Marquee's own code strips `autoplay` off every background-slide video and force-sets `data-hoverplay` on it (an explicit, code-commented opt-out from decorate.js's usual flag handling), then drives play/pause itself via its own scroll/section-adjacency logic (see Notes above). In practice, none of these hash flags control this block's background-video playback — the "Video gotcha" line above describing `#autoplay|viewportplay` needing to be added is stale and worth correcting separately.

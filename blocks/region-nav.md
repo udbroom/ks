@@ -31,3 +31,6 @@ This block has no author-facing variations. (The `.hide` class referenced in the
 - Row 2's columns are not laid out 1:1 with the cells you author — the container applies a CSS multi-column layout (1 column on mobile, 3 columns at 600px+, 5 columns at 1200px+), so the browser reflows all the group headings/lists together into that many visual columns regardless of how many divs/cells you used.
 - This block is meant to live inside a modal/dialog fragment (it's styled specifically for `.dialog-modal`); authoring it as a normal in-page block is not its intended use.
 - Links are checked with a live `HEAD` request when a visitor hovers or clicks — broken destination pages silently fall back to the target locale's homepage rather than erroring, so there's no visual indicator in the doc if a link target doesn't exist for a given locale.
+- A handful of newer/expansion markets don't have their own localized site (mostly parts of East Africa, the Caucasus, Central Asia, and the Middle East/North Africa). Links to these markets skip the normal "find the equivalent page" rewrite described above — clicking one just sets the visitor's country and sends them to the US site instead.[^geo-expansion]
+
+[^geo-expansion]: [#6327](https://github.com/adobecom/milo/pull/6327) — 2026-06

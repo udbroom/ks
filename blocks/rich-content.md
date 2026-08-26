@@ -8,12 +8,12 @@ The block is authored as **one row with one cell** (the "foreground" content) in
 
 | Row | Content |
 | --- | --- |
-| Row 1 (required) | A single cell containing, in order: an optional heading (any level `H1`–`H6`) — if you omit a heading, the first paragraph is auto-promoted to *look* like a Heading 2 (visually only — screen readers and SEO still see a plain paragraph, so use a real heading whenever the text is structurally a heading). If the text starts with a typographic opening quote (curly quote, e.g. `"`), the mark is pulled into its own styled span for a "hanging quote" effect — no special authoring needed. If the paragraph immediately before the heading is a small image (icon) followed by short text, it becomes an "eyebrow" line with an inline icon. Below the heading, add body paragraphs. Add one or more buttons/links using standard Milo button syntax: bold text (`**text**`) = filled/primary button, italic text (`*text*`) = outline/secondary button, a plain link on its own line = link-styled (no button chrome). Bold and italic links are often paired together in one emphasized line, e.g. `_**[Get started](#)** [Learn more](#)_`. |
-| Row 2, second cell (optional, only with `hero`, and only in some deployments) | A second cell in the same row. If present and text-only, its content is treated as a CSS gradient/color value and applied as a custom hero-overlay override on the surrounding section, letting you replace the default dark hero gradient for that instance. Not every deployment of this block reads this cell — if you add it and see no effect, this deployment doesn't support the override and the default hero overlay is used instead. |
+| Row 1 (required) | A single cell containing, in order: an optional heading (any level `H1`–`H6`) — if you omit a heading, the first paragraph is auto-promoted to *look* like a Heading 2 (visually only — screen readers and SEO still see a plain paragraph, so use a real heading whenever the text is structurally a heading). If the text starts with a typographic opening quote, the mark is pulled into its own styled span for a "hanging quote" effect — no special authoring needed; in some deployments this detection also covers straight double quotes (`"`) and several locale-specific opening-quote styles (German/Slavic-style low quotes, CJK corner brackets, full-width quotes), while others only catch curly Unicode quotes.[^quote-detection] If the paragraph immediately before the heading is a small image (icon) followed by short text, it becomes an "eyebrow" line with an inline icon. Below the heading, add body paragraphs. Add one or more buttons/links using standard Milo button syntax: bold text (`**text**`) = filled/primary button, italic text (`*text*`) = outline/secondary button, a plain link on its own line = link-styled (no button chrome). Bold and italic links are often paired together in one emphasized line, e.g. `_**[Get started](#)** [Learn more](#)_`. |
+| Row 2, second cell (optional, only with `hero`) | A second cell in the same row. If present and text-only, its content is treated as a CSS gradient/color value and applied as a custom hero-overlay override on the surrounding section, letting you replace the default dark hero gradient for that instance. |
 
-**Jump-link contract (most deployments, not all):** if the block name includes `jump-link` (see Variations), add one additional paragraph anywhere in the cell containing only links separated by the pipe character `|`, e.g. `[Overview](#overview) | [Pricing](#pricing) | [FAQ](#faq)` — the code detects this row by looking for a `|` character among the links. That paragraph becomes a horizontal (or vertical, on mobile) jump-link nav with numbered/arrow badges that smooth-scroll to the matching `id` on the page. The simplest deployments of this block don't support `jump-link` at all.
+**Jump-link contract:** if the block name includes `jump-link` (see Variations), add one additional paragraph anywhere in the cell containing only links separated by the pipe character `|`, e.g. `[Overview](#overview) | [Pricing](#pricing) | [FAQ](#faq)` — the code detects this row by looking for a `|` character among the links. That paragraph becomes a horizontal (or vertical, on mobile) jump-link nav with numbered/arrow badges that smooth-scroll to the matching `id` on the page.
 
-**Media contract (most deployments, not all):** if the block name includes `media` (see Variations), the table structure changes to hold both a CTA cell and a media cell (a picture, video, or a link to an `.mp4` file) — both optional, but at least one is expected for the variant to render meaningfully. How strictly cell order matters, and the resulting media's aspect ratio/shape, both vary by deployment — some require a fixed "CTA cell first, media cell second" order and render a narrow portrait clip; others scan every cell to find whichever one looks like media regardless of order, and render a wider, closer-to-square shape. When in doubt, author CTA first and media second — that order works everywhere media is supported. The simplest deployments of this block don't support `media` at all.
+**Media contract:** if the block name includes `media` (see Variations), the table structure changes to hold both a CTA cell and a media cell (a picture, video, or a link to an `.mp4` file) — both optional, but at least one is expected for the variant to render meaningfully. How strictly cell order matters, and the resulting media's aspect ratio/shape, both vary by deployment — some require a fixed "CTA cell first, media cell second" order and render a narrow portrait clip; others scan every cell to find whichever one looks like media regardless of order, and render a wider, closer-to-square shape. When in doubt, author CTA first and media second — that order works everywhere media is supported.
 
 ## Variations
 
@@ -26,10 +26,10 @@ Add these as modifier text in the block name cell, comma-separated, e.g. `Rich C
 | `dark`[^dark] | Removes the block's own background color (used when content sits over a section background image/video). | All deployments |
 | `max-width-8`[^max-width-8] / `max-width-10`[^max-width-10] | With `hero` on desktop, constrains the content column to an 8- or 10-column grid width. | All deployments |
 | `left-split`[^left-split] | On desktop, lays content out with buttons pinned to the right side of the text instead of stacked below it. | Most deployments |
-| `jump-link`[^jump-link] | Enables the jump-link paragraph described above; implies knockout/white text. Commonly combined with `hero`. | Most deployments |
+| `jump-link`[^jump-link] | Enables the jump-link paragraph described above; implies knockout/white text. Commonly combined with `hero`. | All deployments |
 | `narrow`[^narrow] / `narrow-xs`[^narrow-xs] | Caps the max-width of the heading/body text for a tighter reading column, tablet+ only (`narrow-xs` is tighter). | Most deployments |
 | `grid-full-width`[^grid-full-width] | Used inside a `bento` Section (see [Section Metadata](./section-metadata.md)) so the block spans the full masonry grid width with adjusted spacing. | Most deployments |
-| `media`[^media] | Switches to the CTA + media layout described above; renders on a dark background. (Older authoring/docs may reference this as `video` — that name has been retired everywhere this block is used; use `media`.) | Most deployments |
+| `media`[^media] | Switches to the CTA + media layout described above; renders on a dark background. (Older authoring/docs may reference this as `video` — that name has been retired everywhere this block is used; use `media`.) | All deployments |
 | `no-overlay`[^no-overlay] | Used with `media`: skips the blurred/darkened section background treatment behind the media. | Most deployments |
 | `indent`[^indent] | Used inside a `bento` Section: indents the block with adjusted spacing (an alternative to `grid-full-width`). | Only some deployments |
 | `glass-border`[^glass-border] | Used with `media`: adds a translucent "glass" frame/border around the media instead of plain rounded corners. | Only some deployments |
@@ -51,6 +51,7 @@ Add these as modifier text in the block name cell, comma-separated, e.g. `Rich C
 [^indent]: [`418ad2f`](https://github.com/adobecom/milo/commit/418ad2f) — Ryan Clayton, 2026-07-09
 [^glass-border]: [`a0ce466`](https://github.com/adobecom/milo/commit/a0ce466) — Dusan Kosanovic, 2026-07-20
 [^merch-moment]: [`e6f7950`](https://github.com/adobecom/milo/commit/e6f7950) — Dusan Kosanovic, 2026-07-17
+[^quote-detection]: [#6420](https://github.com/adobecom/milo/pull/6420) — 2026-07
 
 ## Example
 
@@ -67,7 +68,7 @@ Jump-link hero:
 ```
 | Rich Content (hero, jump-link) |
 | --- |
-| ![icon](https://main--milo--adobecom.aem.live/libs/mep/ace1205/rich-content/assets/arrow.svg) Product update<br># What's new in Creative Cloud<br>[Overview](#overview) \| [Apps](#apps) \| [Pricing](#pricing) |
+| ![icon](https://main--milo--adobecom.aem.live/rich-content-assets/arrow.svg) Product update<br># What's new in Creative Cloud<br>[Overview](#overview) \| [Apps](#apps) \| [Pricing](#pricing) |
 ```
 
 Media variant:
@@ -98,3 +99,16 @@ Per-viewport example (breakpoint is width, not device):
 - **[Section Metadata](./section-metadata.md) interaction:** pairing the `media` variant with a scroll-driven "garage door" reveal style on the containing section's Section Metadata `layout`/`style` row (only available in some deployments) animates the section open as the visitor scrolls, with extra spacing tuned for this block's media layout — has no effect without the `media` variant also present. See [section-metadata.md](./section-metadata.md).
 - If you don't add a real heading tag, the first paragraph is only visually promoted to heading size — check the visual result if you intended plain body copy only, since it will look like a headline even though it stays a `<p>` for accessibility/SEO.
 - Video gotcha (`media` variant): pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the video to autoplay only while scrolled into view (instead of finishing during page load), the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it's visible it has already finished, so visitors just see its frozen last frame.
+
+## GTK
+
+### Video Flags and Attributes
+
+Add one or more of these to the end of the video's link URL, after a `#` (combine more than one with `|`, e.g. `#autoplay|viewportplay`):
+
+| Flag | Effect |
+| --- | --- |
+| `autoplay` | Plays automatically, muted, and loops. Used alone, playback starts as soon as the page loads — if the video isn't visible yet, it can finish before a visitor scrolls to it. Pair with `viewportplay` to avoid that. |
+| `autoplay1` | Same as `autoplay`, but plays once instead of looping. |
+| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay\|viewportplay`) so it doesn't finish before becoming visible. |
+| `hoverplay` | No autoplay — instead, the video is muted and plays only while a visitor hovers over or focuses it, pausing otherwise. |
