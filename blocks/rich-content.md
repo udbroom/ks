@@ -98,17 +98,18 @@ Per-viewport example (breakpoint is width, not device):
 - `hero` height is CSS-driven and shared with the parent `.section` — combine with a section background image/video (via [Section Metadata](./section-metadata.md)'s `background` key) for the typical full-bleed hero look.
 - **[Section Metadata](./section-metadata.md) interaction:** pairing the `media` variant with a scroll-driven "garage door" reveal style on the containing section's Section Metadata `layout`/`style` row (only available in some deployments) animates the section open as the visitor scrolls, with extra spacing tuned for this block's media layout — has no effect without the `media` variant also present. See [section-metadata.md](./section-metadata.md).
 - If you don't add a real heading tag, the first paragraph is only visually promoted to heading size — check the visual result if you intended plain body copy only, since it will look like a headline even though it stays a `<p>` for accessibility/SEO.
-- Video gotcha (`media` variant): pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the video to autoplay only while scrolled into view (instead of finishing during page load), the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it's visible it has already finished, so visitors just see its frozen last frame.
+- Video gotcha (`media` variant): pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the video to autoplay only while scrolled into view (instead of finishing during page load), the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay#viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it's visible it has already finished, so visitors just see its frozen last frame.
 
 ## GTK
 
 ### Video Flags and Attributes
 
-Add one or more of these to the end of the video's link URL, after a `#` (combine more than one with `|`, e.g. `#autoplay|viewportplay`):
+Add one or more of these to the end of the video's link URL, after a `#`. To combine more than one, put each behind its own `#`, e.g. `#autoplay#viewportplay` — don't use `|` to join them: `|` is also how a poster image's embedded video URL is separated from its own alt text (see the video gotcha above), so a `|` inside the video's hash breaks that split.
 
 | Flag | Effect |
 | --- | --- |
 | `autoplay` | Plays automatically, muted, and loops. Used alone, playback starts as soon as the page loads — if the video isn't visible yet, it can finish before a visitor scrolls to it. Pair with `viewportplay` to avoid that. |
 | `autoplay1` | Same as `autoplay`, but plays once instead of looping. |
-| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay\|viewportplay`) so it doesn't finish before becoming visible. |
+| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay#viewportplay`) so it doesn't finish before becoming visible. |
 | `hoverplay` | No autoplay — instead, the video is muted and plays only while a visitor hovers over or focuses it, pausing otherwise. |
+| `_hide-controls` | Skips the pause/play accessibility control overlay that autoplay/hoverplay videos normally get layered on top of them — use for purely decorative video where a visible, keyboard-focusable pause button doesn't add value. When combining with another flag, put it first, e.g. `#_hide-controls#autoplay`. |

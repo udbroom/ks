@@ -57,17 +57,18 @@ Where available, with the mobile carousel variant:
 - Supports Milo's `mobile-viewport`/`tablet-viewport`/`desktop-viewport` content-override rows (same viewport-delimiter pattern as [Rich Content](./rich-content.md), including the 768px/1280px breakpoint split) if you need to vary slide content per breakpoint.
 - Where `mobile-carousel` is available, the code clones the first and last slide to create a seamless-loop illusion when swiping past the ends — this is automatic and requires no extra authoring.
 - Respects `prefers-reduced-motion`: swiping, using the arrow buttons, and navigating with the keyboard all skip the sliding/rotating animation and jump straight to the new slide instead.[^reduced-motion]
-- Video gotcha: pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the video to autoplay only while scrolled into view (instead of finishing during page load), the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it's visible it has already finished, so visitors just see its frozen last frame.
+- Video gotcha: pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the video to autoplay only while scrolled into view (instead of finishing during page load), the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay#viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it's visible it has already finished, so visitors just see its frozen last frame.
 
 ## GTK
 
 ### Video Flags and Attributes
 
-Add one or more of these to the end of the video's link URL, after a `#` (combine more than one with `|`, e.g. `#autoplay|viewportplay`):
+Add one or more of these to the end of the video's link URL, after a `#`. To combine more than one, put each behind its own `#`, e.g. `#autoplay#viewportplay` — don't use `|` to join them: `|` is also how a poster image's embedded video URL is separated from its own alt text (see the video gotcha above), so a `|` inside the video's hash breaks that split.
 
 | Flag | Effect |
 | --- | --- |
 | `autoplay` | Plays automatically, muted, and loops. Used alone, playback starts as soon as the page loads — if the video isn't visible yet, it can finish before a visitor scrolls to it. Pair with `viewportplay` to avoid that. |
 | `autoplay1` | Same as `autoplay`, but plays once instead of looping. |
-| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay\|viewportplay`) so it doesn't finish before becoming visible. |
+| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay#viewportplay`) so it doesn't finish before becoming visible. |
 | `hoverplay` | No autoplay — instead, the video is muted and plays only while a visitor hovers over or focuses it, pausing otherwise. |
+| `_hide-controls` | Skips the pause/play accessibility control overlay that autoplay/hoverplay videos normally get layered on top of them — use for purely decorative video where a visible, keyboard-focusable pause button doesn't add value. When combining with another flag, put it first, e.g. `#_hide-controls#autoplay`. |

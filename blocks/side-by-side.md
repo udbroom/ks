@@ -74,7 +74,7 @@ Featured + equal pair (hero card followed by a matched two-up row, where the exp
 
 - If either row is missing, or either row has fewer cells than expected for the variant, nothing renders — always author exactly matching row/cell structure.
 - Videos in either card are managed automatically: an intersection observer pauses off-screen video and resumes on-screen video; authors do not need to configure autoplay behavior manually beyond adding the video.
-- Video gotcha: pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. Using `#autoplay` alone plays the video immediately on page load (before the intersection observer above ever gets a chance to manage it) — by the time the card scrolls into view it has already finished, so visitors just see its frozen last frame. If you want it scroll-gated instead, its hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`.
+- Video gotcha: pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. Using `#autoplay` alone plays the video immediately on page load (before the intersection observer above ever gets a chance to manage it) — by the time the card scrolls into view it has already finished, so visitors just see its frozen last frame. If you want it scroll-gated instead, its hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay#viewportplay`.
 - Supports Milo's mobile/tablet/desktop content-override rows (see [rich-content.md](./rich-content.md)'s Notes for how that pattern works) — a viewport-delimiter row can override just one card's media or text while leaving the other card's content inherited from the previous viewport.
 - Where the `featured` variant is available, it only assigns a card type to the first media/text cell pair. If you accidentally author a second media/text cell pair alongside `featured`, that second card gets an invalid/blank card-type class and won't render its overlay/stacked styling correctly — keep `featured` blocks to exactly one media cell + one text cell.
 - `reverse`/`equal`/`featured` now work correctly together with mobile/tablet/desktop viewport-override rows[^viewport-fix] — previously, combining a variation class with viewport overrides could silently fall back to the default card layout instead of applying the variant, since the code checked the wrong element's class list for viewport-override content. If you saw a variant "not take" on a viewport-override authored block before, it should now.
@@ -87,11 +87,12 @@ Featured + equal pair (hero card followed by a matched two-up row, where the exp
 
 ### Video Flags and Attributes
 
-Add one or more of these to the end of the video's link URL, after a `#` (combine more than one with `|`, e.g. `#autoplay|viewportplay`):
+Add one or more of these to the end of the video's link URL, after a `#`. To combine more than one, put each behind its own `#`, e.g. `#autoplay#viewportplay` — don't use `|` to join them: `|` is also how a poster image's embedded video URL is separated from its own alt text (see the video gotcha above), so a `|` inside the video's hash breaks that split.
 
 | Flag | Effect |
 | --- | --- |
 | `autoplay` | Plays automatically, muted, and loops. Used alone, playback starts as soon as the page loads — if the video isn't visible yet, it can finish before a visitor scrolls to it. Pair with `viewportplay` to avoid that. |
 | `autoplay1` | Same as `autoplay`, but plays once instead of looping. |
-| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay\|viewportplay`) so it doesn't finish before becoming visible. |
+| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay#viewportplay`) so it doesn't finish before becoming visible. |
 | `hoverplay` | No autoplay — instead, the video is muted and plays only while a visitor hovers over or focuses it, pausing otherwise. |
+| `_hide-controls` | Skips the pause/play accessibility control overlay that autoplay/hoverplay videos normally get layered on top of them — use for purely decorative video where a visible, keyboard-focusable pause button doesn't add value. When combining with another flag, put it first, e.g. `#_hide-controls#autoplay`. |

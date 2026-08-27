@@ -54,8 +54,8 @@ Add modifier classes to the block name cell (these are read from the block's own
 - Slide count must match the layout you're using: exactly 4 for the default layout, or exactly 3 with `slides-3`[^slides-3] (the column-offset math and grid-row count assume whichever one you picked). Fewer or more will visually break the scroll animation.
 - The block is heavily scroll/animation driven (CSS `animation-timeline`), with full `prefers-reduced-motion` fallbacks and a `@supports not (animation-timeline: view())` fallback for browsers without scroll-driven animation support (e.g. Firefox) — no extra authoring is needed for these, they're automatic.
 - On mobile, video slides autoplay/rewind based on scroll position via `IntersectionObserver`; this is automatic once a video is present in a slide's media cell.
-- Video gotcha: pair the video link with its poster image as two adjacent cells in the same row — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the scroll-triggered play/pause above to actually kick in, the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it scrolls into view it has already finished, so visitors just see its frozen last frame.
-- With `slides-3`[^slides-3-video], video in either the image grid or the carousel slides autoplays purely on scroll position (playing once ~50% visible, pausing when it scrolls out) — the `#autoplay|viewportplay` hash convention above isn't needed for these. This only kicks in for videos **5.1 seconds or shorter**; longer videos are left paused on their poster frame instead of autoplaying. Reduced-motion visitors never get autoplay here either way.
+- Video gotcha: pair the video link with its poster image as two adjacent cells in the same row — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the scroll-triggered play/pause above to actually kick in, the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay#viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it scrolls into view it has already finished, so visitors just see its frozen last frame.
+- With `slides-3`[^slides-3-video], video in either the image grid or the carousel slides autoplays purely on scroll position (playing once ~50% visible, pausing when it scrolls out) — the `#autoplay#viewportplay` hash convention above isn't needed for these. This only kicks in for videos **5.1 seconds or shorter**; longer videos are left paused on their poster frame instead of autoplaying. Reduced-motion visitors never get autoplay here either way.
 - In most deployments, a slide's accessible name is built from its own eyebrow and heading text — there's no special first-slide treatment and no generic "N of &lt;slide count&gt;" announcement. In one deployment the older behavior remains: the first slide gets a distinct label built from its link text, and every other slide is announced only as "N of &lt;slide count&gt;." Either way this is automatic. A slide whose link opens a modal is also announced as a button rather than a link in most deployments; one deployment always announces it as a link.[^a11y-label]
 
 [^slides-3]: [#6406](https://github.com/adobecom/milo/pull/6406) — Denys Fedotov, 2026-08-05
@@ -66,13 +66,14 @@ Add modifier classes to the block name cell (these are read from the block's own
 
 ### Video Flags and Attributes
 
-Add one or more of these to the end of the video's link URL, after a `#` (combine more than one with `|`, e.g. `#autoplay|viewportplay`):
+Add one or more of these to the end of the video's link URL, after a `#`. To combine more than one, put each behind its own `#`, e.g. `#autoplay#viewportplay` — don't use `|` to join them: `|` is also how a poster image's embedded video URL is separated from its own alt text (see the video gotcha above), so a `|` inside the video's hash breaks that split.
 
 | Flag | Effect |
 | --- | --- |
 | `autoplay` | Plays automatically, muted, and loops. Used alone, playback starts as soon as the page loads — if the video isn't visible yet, it can finish before a visitor scrolls to it. Pair with `viewportplay` to avoid that. |
 | `autoplay1` | Same as `autoplay`, but plays once instead of looping. |
-| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay\|viewportplay`) so it doesn't finish before becoming visible. |
+| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay#viewportplay`) so it doesn't finish before becoming visible. |
 | `hoverplay` | No autoplay — instead, the video is muted and plays only while a visitor hovers over or focuses it, pausing otherwise. |
+| `_hide-controls` | Skips the pause/play accessibility control overlay that autoplay/hoverplay videos normally get layered on top of them — use for purely decorative video where a visible, keyboard-focusable pause button doesn't add value. When combining with another flag, put it first, e.g. `#_hide-controls#autoplay`. |
 
 Note: with `slides-3`, video autoplays purely from scroll position and doesn't need these flags at all (see Notes above) — this table applies to the default (non-`slides-3`) carousel/grid video.

@@ -53,7 +53,7 @@ Dark variation:
 - The icon image is optional and purely decorative — if you skip it, the heading simply becomes the first item and picks up extra top spacing automatically.
 - The whole card is keyboard-focusable and shows a visible focus ring; don't nest another interactive element (e.g. a second button) inside the content cell, since only one link/destination is supported per card.
 - Minimum card height grows at larger screen widths purely via styling — no extra authoring is needed to accommodate this.
-- Video gotcha: pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the video to autoplay only while scrolled into view (rather than finishing during page load), the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay|viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it's visible it has already finished, so visitors just see its frozen last frame.
+- Video gotcha: pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the video to autoplay only while scrolled into view (rather than finishing during page load), the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay#viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it's visible it has already finished, so visitors just see its frozen last frame.
 - Dark-mode text/background contrast is standard Milo section-level theming (separate from the `dark` variation above) — it applies automatically when the enclosing section/page is set to dark, without any class on this block.
 - **[Section Metadata](./section-metadata.md) `layout`/`style` interaction:** when this block sits in a section whose Section Metadata `layout`/`style` row includes `bento`, extra spacing/sizing rules kick in automatically (padding, heading margins, and content-aspect-ratio adjustments tuned for a bento grid) — nothing extra to author on the card itself. In some deployments, adding `bento, stack-mobile` together on that Section Metadata row also turns a bento section's Explore Cards into a sticky, depth-scaled mobile card-stack scroll animation (with a [Rich Content](./rich-content.md) title pinned above it) below the 768px breakpoint — see [section-metadata.md](./section-metadata.md).
 
@@ -61,11 +61,12 @@ Dark variation:
 
 ### Video Flags and Attributes
 
-Add one or more of these to the end of the video's link URL, after a `#` (combine more than one with `|`, e.g. `#autoplay|viewportplay`):
+Add one or more of these to the end of the video's link URL, after a `#`. To combine more than one, put each behind its own `#`, e.g. `#autoplay#viewportplay` — don't use `|` to join them: `|` is also how a poster image's embedded video URL is separated from its own alt text (see the video gotcha above), so a `|` inside the video's hash breaks that split.
 
 | Flag | Effect |
 | --- | --- |
 | `autoplay` | Plays automatically, muted, and loops. Used alone, playback starts as soon as the page loads — if the video isn't visible yet, it can finish before a visitor scrolls to it. Pair with `viewportplay` to avoid that. |
 | `autoplay1` | Same as `autoplay`, but plays once instead of looping. |
-| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay\|viewportplay`) so it doesn't finish before becoming visible. |
+| `viewportplay` | Delays playback until the video scrolls into view, and pauses it again once it scrolls out. Combine with `autoplay` (`#autoplay#viewportplay`) so it doesn't finish before becoming visible. |
 | `hoverplay` | No autoplay — instead, the video is muted and plays only while a visitor hovers over or focuses it, pausing otherwise. |
+| `_hide-controls` | Skips the pause/play accessibility control overlay that autoplay/hoverplay videos normally get layered on top of them — use for purely decorative video where a visible, keyboard-focusable pause button doesn't add value. When combining with another flag, put it first, e.g. `#_hide-controls#autoplay`. |
