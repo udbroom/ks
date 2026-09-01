@@ -62,10 +62,13 @@ html = """<!DOCTYPE html>
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    color: #8a8a8e;
-    padding: 14px 10px 6px;
+    color: #f5f5f5;
+    background: #2c2c2e;
+    padding: 8px 10px;
+    margin: 12px 0 6px;
+    border-radius: 6px;
   }
-  .list-section-title:first-child { padding-top: 8px; }
+  .list-section-title:first-child { margin-top: 2px; }
   .block-item {
     padding: 9px 10px;
     border-radius: 7px;
