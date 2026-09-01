@@ -52,11 +52,20 @@ html = """<!DOCTYPE html>
     outline: none;
   }
   #search:focus { border-color: #FA0F00; }
-  #block-list {
+  #block-list-wrapper {
     flex: 1;
     overflow-y: auto;
     padding: 0 8px 12px;
   }
+  .list-section-title {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #8a8a8e;
+    padding: 14px 10px 6px;
+  }
+  .list-section-title:first-child { padding-top: 8px; }
   .block-item {
     padding: 9px 10px;
     border-radius: 7px;
@@ -453,7 +462,12 @@ html = """<!DOCTYPE html>
     <div class="count" id="block-count"></div>
   </div>
   <input id="search" type="text" placeholder="Search blocks or content...">
-  <div id="block-list"></div>
+  <div id="block-list-wrapper">
+    <div class="list-section-title">Block list</div>
+    <div id="block-list"></div>
+    <div class="list-section-title">Non block list</div>
+    <div id="non-block-list"></div>
+  </div>
 </div>
 
 <div id="main">
@@ -464,9 +478,22 @@ html = """<!DOCTYPE html>
 const BLOCKS = __BLOCKS_JSON__;
 
 const listEl = document.getElementById('block-list');
+const nonBlockListEl = document.getElementById('non-block-list');
 const mainEl = document.getElementById('main-inner');
 const searchEl = document.getElementById('search');
 const countEl = document.getElementById('block-count');
+
+// These blocks aren't page-authorable content the way a Hero or Card is —
+// each one is either hidden config (Section Metadata), site-wide chrome
+// pulled from a separate shared doc rather than authored per page (Global
+// Footer, Global Navigation), or a special-purpose embed/utility block tied
+// to one specific context rather than general page content (Iframe embeds
+// an external URL; Region Nav only lives inside the footer's language-picker
+// modal). Listed separately so authors browsing for "a block to add to my
+// page" aren't tripped up by ones they'd never place directly.
+const NON_BLOCK_SLUGS = new Set([
+  'global-footer', 'global-navigation', 'iframe', 'region-nav', 'section-metadata',
+]);
 
 let activeSlug = null;
 let historyStack = []; // stack of slugs, last = current
@@ -498,17 +525,10 @@ function getSnippet(raw, q, radius) {
   return snippet;
 }
 
-function renderList(filter) {
-  const q = (filter || '').toLowerCase().trim();
-  const filtered = BLOCKS.filter(b =>
-    !q ||
-    b.title.toLowerCase().includes(q) ||
-    b.summary.toLowerCase().includes(q) ||
-    b.slug.includes(q) ||
-    (b.raw && b.raw.toLowerCase().includes(q))
-  );
-  countEl.textContent = filtered.length + ' of ' + BLOCKS.length + ' blocks';
-  listEl.innerHTML = filtered.map(b => {
+// Renders one group's worth of block-items into a container and wires up
+// their click handlers — shared by both the Block list and Non block list.
+function renderBlockGroup(containerEl, blocks, q) {
+  containerEl.innerHTML = blocks.map(b => {
     const titleHtml = highlightPlain(b.title, q);
     const titleMatches = q && b.title.toLowerCase().includes(q);
     let snippetHtml = '';
@@ -523,9 +543,26 @@ function renderList(filter) {
       </div>
     `;
   }).join('');
-  listEl.querySelectorAll('.block-item').forEach(el => {
+  containerEl.querySelectorAll('.block-item').forEach(el => {
     el.addEventListener('click', () => selectBlock(el.dataset.slug));
   });
+}
+
+function renderList(filter) {
+  const q = (filter || '').toLowerCase().trim();
+  const matches = (b) =>
+    !q ||
+    b.title.toLowerCase().includes(q) ||
+    b.summary.toLowerCase().includes(q) ||
+    b.slug.includes(q) ||
+    (b.raw && b.raw.toLowerCase().includes(q));
+
+  const mainBlocks = BLOCKS.filter(b => !NON_BLOCK_SLUGS.has(b.slug) && matches(b));
+  const nonBlocks = BLOCKS.filter(b => NON_BLOCK_SLUGS.has(b.slug) && matches(b));
+
+  countEl.textContent = (mainBlocks.length + nonBlocks.length) + ' of ' + BLOCKS.length + ' blocks';
+  renderBlockGroup(listEl, mainBlocks, q);
+  renderBlockGroup(nonBlockListEl, nonBlocks, q);
 }
 
 function selectBlock(slug, opts) {
