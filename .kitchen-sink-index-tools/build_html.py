@@ -96,7 +96,7 @@ html = """<!DOCTYPE html>
     overflow-y: auto;
     padding: 36px 48px 80px;
   }
-  #main-inner { max-width: 780px; margin: 0 auto; }
+  #main-inner { max-width: 100%; margin: 0 auto; }
   .doc-summary {
     background: #fff5f4;
     border: 1px solid #ffd6d3;
@@ -542,6 +542,20 @@ function selectBlock(slug, opts) {
     }
   }
 
+  // Keep the address bar as a clean, shareable /<slug> URL. Reuse the same
+  // push/replace choice as the in-app history stack above: real forward
+  // navigation adds a browser history entry, silent navigation (back,
+  // history-dropdown jump, popstate) just replaces the current one.
+  if (!opts.fromPopState) {
+    const path = '/' + slug + (opts.scrollToId ? '#' + opts.scrollToId : '');
+    const state = { slug };
+    if (opts.push !== false) {
+      history.pushState(state, '', path);
+    } else {
+      history.replaceState(state, '', path);
+    }
+  }
+
   const sectionNames = { authoring: 'Authoring instructions', variations: 'Variations', example: 'Example', notes: 'Notes' };
   const badges = Object.entries(b.sections).map(([k, present]) =>
     `<span class="badge${present ? '' : ' missing'}">${present ? '✓' : '✕'} ${sectionNames[k]}</span>`
@@ -572,6 +586,12 @@ function selectBlock(slug, opts) {
   wireFootnotes(b);
   renderNavBar();
   wrapMatches(mainEl.querySelector('.doc-content'), searchEl.value);
+
+  // Deep link to a specific heading, e.g. /comparison-table-c2#variations.
+  if (opts.scrollToId) {
+    const target = document.getElementById(opts.scrollToId);
+    if (target) target.scrollIntoView({ block: 'start' });
+  }
 }
 
 // Wrap every occurrence of the search query in <mark> within a text-node
@@ -784,8 +804,27 @@ searchEl.addEventListener('input', () => {
   refreshContentHighlight();
 });
 
+// Browser back/forward: re-select whatever block the URL now points at,
+// without pushing/replacing history again (the browser already moved).
+window.addEventListener('popstate', () => {
+  const slug = location.pathname.replace(/^\/+/, '') || (BLOCKS[0] && BLOCKS[0].slug);
+  if (BLOCKS.find(x => x.slug === slug)) {
+    selectBlock(slug, { fromPopState: true, scrollToId: location.hash ? location.hash.slice(1) : null });
+  }
+});
+
 renderList('');
-if (BLOCKS.length) selectBlock(BLOCKS[0].slug);
+
+// Clean-URL entry point: opening /<slug> (optionally #<heading-id>) directly
+// — e.g. a shared link — loads straight into that block instead of the
+// first one in the list.
+(function initialLoad() {
+  const pathSlug = location.pathname.replace(/^\/+/, '');
+  const matched = pathSlug && BLOCKS.find(x => x.slug === pathSlug);
+  const initialSlug = matched ? matched.slug : (BLOCKS[0] && BLOCKS[0].slug);
+  if (!initialSlug) return;
+  selectBlock(initialSlug, { push: false, scrollToId: location.hash ? location.hash.slice(1) : null });
+})();
 </script>
 
 </body>

@@ -1,4 +1,5 @@
 import markdown, json, re, os, datetime
+import html as html_mod
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 DOCS_ROOT = os.path.dirname(SCRIPT_DIR)  # kitchen-sink-docs/
@@ -32,6 +33,38 @@ def highlight_autoplay_warning(html):
     return AUTOPLAY_WARNING_RE.sub(
         lambda m: f'<span class="autoplay-warn">{m.group(0)}</span>', html
     )
+
+
+# Give every heading in a block's rendered content a stable, URL-friendly id
+# (e.g. "Authoring instructions" -> "authoring-instructions") so a shared
+# link like /comparison-table-c2#variations can deep-link straight to it.
+HEADING_RE = re.compile(r'<(h[1-6])([^>]*)>(.*?)</\1>', re.DOTALL | re.IGNORECASE)
+TAG_STRIP_RE = re.compile(r'<[^>]+>')
+NON_SLUG_RE = re.compile(r'[^a-z0-9]+')
+
+
+def _slugify_heading(inner_html):
+    text = html_mod.unescape(TAG_STRIP_RE.sub('', inner_html))
+    slug = NON_SLUG_RE.sub('-', text.lower()).strip('-')
+    return slug or 'section'
+
+
+def assign_heading_ids(html):
+    seen = {}
+
+    def repl(m):
+        tag, attrs, inner = m.group(1), m.group(2), m.group(3)
+        if re.search(r'\bid\s*=', attrs, re.IGNORECASE):
+            return m.group(0)  # author/markdown already gave it one — leave it
+        slug = _slugify_heading(inner)
+        if slug in seen:
+            seen[slug] += 1
+            slug = f'{slug}-{seen[slug]}'
+        else:
+            seen[slug] = 0
+        return f'<{tag}{attrs} id="{slug}">{inner}</{tag}>'
+
+    return HEADING_RE.sub(repl, html)
 
 
 def extract_footnotes(raw):
@@ -457,6 +490,7 @@ for fname in files:
 
     html = markdown.markdown(cleaned_raw, extensions=["tables", "fenced_code", "sane_lists"])
     html = highlight_autoplay_warning(html)
+    html = assign_heading_ids(html)
 
     mtime = os.path.getmtime(path)
     last_updated = datetime.datetime.fromtimestamp(mtime).strftime("%b %-d, %Y")

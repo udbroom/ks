@@ -2,6 +2,27 @@
 
 Tracks snapshots of `/blocks/` taken on request. Live docs in `/blocks/` are always the current working copy; a version here is a frozen copy made at `snapshots/<version>/` only when asked for.
 
+## v1.1.2 — 2026-09-01
+
+Two new block docs, a round of upstream corrections (including a "GTK" video-flags reference table added to every video-capable block), and three site/tooling improvements to the index itself.
+
+**New blocks:**
+
+- **globe-gallery.md** and **roller-carousel.md** — added, filling the "not yet included" gap flagged back in v1.0. Globe Gallery was later restructured from 4 to 5 rows (PR #6477) to add on-screen pause/resume and rotate controls; Roller Carousel picked up an SVG-icon authoring note (VQA changes, 2026-08-19–24).
+
+**Upstream corrections:**
+
+- **New "GTK: Video Flags and Attributes" reference table**, added to all 10 video-capable blocks (hub-hero, explore-card, elastic-carousel, rich-content, split-aside-grid, section-metadata, router-marquee, social-proof, side-by-side, offer-hero) — documents `autoplay`, `autoplay1`, `viewportplay`, `hoverplay`, and the new `_hide-controls` flag. Independently confirms the mechanics behind the v1.1 "Video gotcha" notes.
+- **Corrected the video hash delimiter**: multiple flags are joined with additional `#` marks (e.g. `#autoplay#viewportplay`), not `|` — `|` is already reserved for separating a poster image's embedded video URL from its alt text. Updated everywhere the old `|`-joined example appeared.
+- **Elastic Carousel** flags that its own mobile-autoplay/hover playback is driven by block-specific code, independent of the hash flags above — worth confirming against current code if a slide's autoplay/hover isn't behaving as documented.
+- Assorted smaller upstream fixes: Hub Hero (video in `slides-3` image grid, accessibility label deployment differences), Offer Hero (dark-mode card treatment corrected, PR #6554), Router Marquee (Korean-locale free-trial CTA override), Section Metadata (`bento` + `body-color-solid`, masonry + stagger pairing), Side by Side (`card-stacked` icon badge), Split Aside Grid (reduced-motion support), Tabs (`radio` accessibility fix, Up/Down keyboard nav), Rich Content (quote-detection locale coverage, `spacing-<size>` modifier for `media`, deployment-availability wording), Product Marquee Grid (merch/pricing card), Comparison Table C2, News, Region Nav, Global Navigation, PDF Space, Tour (each a small documentation correction or clarification).
+
+**Site improvements** (not doc content — the index tooling itself):
+
+- Main content column now uses full width instead of a fixed 780px cap.
+- Every block now has a clean, shareable URL (`/<slug>`, e.g. `/comparison-table-c2`), with browser back/forward support; `vercel.json` updated with a catch-all rewrite so the deployed site resolves these paths.
+- Every heading now gets a stable, slugified `id` for deep-linking (e.g. `/comparison-table-c2#variations`).
+
 ## v1.1 — 2026-08-13
 
 Pulled in upstream Milo changes since v1.0, plus a new authoring gotcha added across all video-capable blocks.
