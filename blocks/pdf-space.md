@@ -54,3 +54,4 @@ This block has no author-facing variation classes to add to the block-name cell.
 - This block is very tall (650vh) and pins to the viewport while scrolling — it's meant to be used once per page as a hero, not repeated.
 - All decorative animation elements (mockup chrome, dot-grid canvas, Adobe logo flourish, the animated card clones) are marked `aria-hidden` in the code, so screen reader/keyboard users only ever encounter the real authored content (cards' text, marketing copy, title, CTA) — authors don't need to do anything extra for this.
 - The full engineering-level tuning reference (phase timings, arc geometry, z-index layering, etc.) lives in this block's own in-repo README — that's for developers adjusting the animation feel, not for content authors.
+- The whole animation (card positions, arc direction, text panel side) now mirrors automatically for RTL locales — nothing to author differently.

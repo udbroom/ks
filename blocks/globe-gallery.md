@@ -66,6 +66,7 @@ Formerly led design ops at a Fortune 500 retailer.
 - A card section with no image is silently skipped — it never reaches the globe and nothing flags the omission, so a missing photo in the fragment is easy to miss during a content review.
 - Cards don't necessarily appear on the globe or barrel in the order you wrote them in the fragment — their visual position is deliberately (but consistently) shuffled, the same way for every visitor. The position counter and Next/Previous buttons in the detail view still follow your authored order.[^card-cap]
 - This is a large, purely visual/interactive hero experience — pair it with the intro copy (row 1) and pull-quote (row 5) it's designed around rather than expecting other page content to sit inside its scroll run.
+- In the detail view, clicking/tapping anywhere outside the photo also closes it (in addition to Esc/Close) — buttons, links, the info panel, and the card-position counter are exempt so they stay clickable.
 
 [^controls]: [#6477](https://github.com/adobecom/milo/pull/6477) — Jingle Huang, 2026-08-18. Added the on-screen pause/resume-spin and rotate-left/right controls, split the old single hint/instructions/labels row into today's rows 3 and 4, and grew the label list from 4 to 9 parts.
 [^card-cap]: [#6509](https://github.com/adobecom/milo/pull/6509) — Jingle Huang, 2026-08-25 ("Globe VQA Feedback"). Removed the earlier 24-card cap on small screens/touch devices and added the deterministic card-shuffle.
