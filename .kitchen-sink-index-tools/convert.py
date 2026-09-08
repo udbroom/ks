@@ -244,7 +244,7 @@ def render_example_table(code_text):
             # viewport delimiter, not real content — style it distinctly.
             if len(r) == 1 and VIEWPORT_ROW_RE.match(r[0].strip()):
                 out.append(
-                    f'<tr class="ex-viewport-row"><td colspan="{ncols}">&#9656; {r[0].strip()}</td></tr>'
+                    f'<tr class="ex-viewport-row"><td colspan="{ncols}">{r[0].strip()}</td></tr>'
                 )
                 continue
             cells = r + [''] * (ncols - len(r))

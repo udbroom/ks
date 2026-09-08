@@ -16,15 +16,29 @@ html = """<!DOCTYPE html>
   body {
     margin: 0;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    background: #fff;
+    background: #e8e8ea;
     color: #1d1d1f;
     display: flex;
+    justify-content: center;
     height: 100vh;
+    overflow: hidden;
+  }
+  /* Wraps sidebar + main so the whole app centers as one unit once the
+     viewport is wider than sidebar (300px) + main (max 1200px) combined,
+     instead of main stretching full-bleed on wide screens. */
+  #app-wrapper {
+    display: flex;
+    width: 100%;
+    max-width: 1500px;
+    height: 100%;
+    background: #fff;
+    box-shadow: 0 0 0 1px #e5e5e7;
     overflow: hidden;
   }
   #sidebar {
     width: 300px;
     min-width: 300px;
+    flex-shrink: 0;
     border-right: 1px solid #e5e5e7;
     display: flex;
     flex-direction: column;
@@ -79,6 +93,10 @@ html = """<!DOCTYPE html>
   .block-item.active { background: #FA0F00; }
   .block-item.active .block-title { color: #fff; }
   .block-item.active .block-meta { color: #ffd6d3; }
+  .block-item.active:hover { background: #cbc9c9; }
+  .block-item.active:hover .block-title,
+  .block-item.active:hover .block-meta,
+  .block-item.active:hover .block-snippet { color: #000; }
   .block-title {
     font-size: 13.5px;
     font-weight: 600;
@@ -105,6 +123,7 @@ html = """<!DOCTYPE html>
   .block-item.active mark.search-hit { background: #fff3c4; }
   #main {
     flex: 1;
+    max-width: 1200px;
     overflow-y: auto;
     padding: 36px 48px 80px;
   }
@@ -459,22 +478,24 @@ html = """<!DOCTYPE html>
 </head>
 <body>
 
-<div id="sidebar">
-  <div id="sidebar-header">
-    <h1>Kitchen Sink Blocks</h1>
-    <div class="count" id="block-count"></div>
+<div id="app-wrapper">
+  <div id="sidebar">
+    <div id="sidebar-header">
+      <h1>Kitchen Sink Blocks</h1>
+      <div class="count" id="block-count"></div>
+    </div>
+    <input id="search" type="text" placeholder="Search blocks or content...">
+    <div id="block-list-wrapper">
+      <div class="list-section-title">Block list</div>
+      <div id="block-list"></div>
+      <div class="list-section-title">Non block list</div>
+      <div id="non-block-list"></div>
+    </div>
   </div>
-  <input id="search" type="text" placeholder="Search blocks or content...">
-  <div id="block-list-wrapper">
-    <div class="list-section-title">Block list</div>
-    <div id="block-list"></div>
-    <div class="list-section-title">Non block list</div>
-    <div id="non-block-list"></div>
-  </div>
-</div>
 
-<div id="main">
-  <div id="main-inner"></div>
+  <div id="main">
+    <div id="main-inner"></div>
+  </div>
 </div>
 
 <script>
