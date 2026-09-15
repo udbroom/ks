@@ -1,6 +1,6 @@
 # Quick Actions
 
-> **Quick summary:** A section header (heading + optional CTA) followed by a responsive grid of image tiles that link out to tools or pages (e.g. a "Quick actions" panel of shortcuts like "Compress a PDF," "Convert to Word"), showing 2 tiles per row on mobile, 3 on tablet, and 6 on desktop. Authored as an optional 1-cell header row, then one row per tile (link cell + image cell). There are no author-facing variation classes — the grid's column count is set automatically by JS. Note: the `two-up`/`three-up`/`six-up` classes this block applies internally are unrelated to Section Metadata's `product-grid` multi-block layout system.
+> **Quick summary:** A section header (heading + optional CTA) followed by a responsive grid of image tiles that link out to tools or pages (e.g. a "Quick actions" panel of shortcuts like "Compress a PDF," "Convert to Word"), showing 2 tiles per row on mobile, 3 on tablet, and 6 on desktop. Authored as an optional 1-cell header row, then one row per tile (link cell + image cell). One author-facing variation, `blur-background`, adds a frosted-glass backdrop behind the block. The grid's column count is set automatically by JS and is not something an author configures. Note: the `two-up`/`three-up`/`six-up` classes this block applies internally are unrelated to Section Metadata's `product-grid` multi-block layout system.
 
 ## Authoring instructions
 
@@ -11,7 +11,13 @@
 
 ## Variations
 
-This block has no author-facing variation classes. The grid's column count (`two-up` / `three-up` / `six-up`) is applied automatically by JS based on viewport width — it is not something an author sets.
+| Variation | Effect | How to author |
+|---|---|---|
+| `blur-background`[^blur-background] | Makes the block's own background transparent and adds a frosted-glass gradient/blur backdrop behind it instead — use when the block sits over imagery or another section's background you want to show through softly. Automatically adjusts its bottom edge when the following section has a `rounded-corners-top` treatment, so the blur doesn't overshoot the corner. | Add `blur-background` to the block name, e.g. `Quick Actions (blur-background)`. |
+
+[^blur-background]: [`d075de0`](https://github.com/adobecom/milo/commit/d075de0) — "Wave 5 base tweaks"
+
+The grid's column count (`two-up` / `three-up` / `six-up`) is applied automatically by JS based on viewport width — it is not something an author sets.
 
 ## Example
 

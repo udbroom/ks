@@ -58,6 +58,10 @@ Where available, with the mobile carousel variant:
 - Where `mobile-carousel` is available, the code clones the first and last slide to create a seamless-loop illusion when swiping past the ends — this is automatic and requires no extra authoring.
 - Respects `prefers-reduced-motion`: swiping, using the arrow buttons, and navigating with the keyboard all skip the sliding/rotating animation and jump straight to the new slide instead.[^reduced-motion]
 - Video gotcha: pair the video link with its poster image as two adjacent cells/lines — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the video to autoplay only while scrolled into view (instead of finishing during page load), the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay#viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it's visible it has already finished, so visitors just see its frozen last frame.
+- Media aspect ratio is now asset-driven[^asset-aspect-ratio]: the stack's aspect ratio is read from the first row's actual image/video dimensions instead of a fixed ratio baked into the CSS. Crop your first slide's media to whatever ratio you want the whole stack to display at — later slides' media is cropped (`object-fit: cover`) to match it, not the other way around.
+- Tablet (768–1279px) now has its own distinct sizing/cropping behavior[^asset-aspect-ratio] separate from desktop (≥1280px) — previously both shared the same "desktop" layout bucket. If you're checking this block at a tablet width, expect it to look different from the old shared desktop treatment, not just a scaled-down version of it.
+
+[^asset-aspect-ratio]: [#6684](https://github.com/adobecom/milo/pull/6684) "Split Aside — asset-driven aspect ratio + Tablet/Mobile V2" — Narcis Radu, 2026-09-10
 
 ## GTK
 

@@ -8,7 +8,7 @@ The block reads rows top to bottom. **Row 1** is the heading row, **every row af
 
 | Row | Content |
 |---|---|
-| 1, cell 1 | The block headline. Put a heading (e.g. `## My Headline`) here — it's auto-styled as `heading-2`. Any other cells in row 1 are ignored. |
+| 1, cell 1 | The block headline. Put a heading (e.g. `## My Headline`) here — it's auto-styled as `heading-2`. You can optionally follow it with one paragraph containing only a link (the link text must equal the whole paragraph's text) — it renders as a small standalone label-link instead of body text. Wrapping the link in bold/italic instead produces a normal button. Any other cells in row 1 are ignored. |
 | 2+, cell 1 (text) | The item's text/label, e.g. `### Real-time collaboration`. Rendered as `heading-5`. |
 | 2+, cell 2 (media) | One or more images. Add multiple images to the same cell to get a stacked, layered "photo pile" that follows the cursor for that item (each extra image is progressively offset/rotated). If a row has no images in cell 2, that item just has no hover media. |
 
@@ -57,3 +57,6 @@ With a per-viewport override (mobile shows fewer items than desktop; breakpoint 
 - Respects `prefers-reduced-motion`: images snap directly into place under the cursor instead of animating in with spring physics.
 - Keyboard/touch users don't get a cursor to "hover" with — on narrower viewports the media block for each item is shown inline instead of relying on mouse position, so content isn't lost, just presented differently.
 - Because only the first cell of row 1 is used for the headline, don't rely on additional cells in the headline row — they're silently dropped.
+- Standalone link support[^standalone-link]: same pattern used elsewhere in Milo (see [Split Aside Grid](./split-aside-grid.md)'s Notes) — a paragraph whose entire text is just a link becomes a styled label-link, not a plain sentence or button.
+
+[^standalone-link]: [`d075de0`](https://github.com/adobecom/milo/commit/d075de0) — "Wave 5 base tweaks"
