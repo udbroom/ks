@@ -67,11 +67,45 @@ def assign_heading_ids(html):
     return HEADING_RE.sub(repl, html)
 
 
-def extract_footnotes(raw):
+# A footnote's change counts as "recent" (and gets flagged with a color)
+# if it happened within this many days of build time. Recomputed on every
+# rebuild, so the highlight naturally fades off content as it ages out.
+RECENT_DAYS = 14
+TODAY = datetime.date.today()
+RECENT_CUTOFF = TODAY - datetime.timedelta(days=RECENT_DAYS)
+
+# Every footnote in this repo's convention ends with a date — either a full
+# "YYYY-MM-DD" or, occasionally, just "YYYY-MM". Pull it off the end of the
+# definition text so we can tell how recent that specific change is.
+FN_DATE_RE = re.compile(r'(\d{4})-(\d{2})(?:-(\d{2}))?\s*$')
+
+
+def _parse_footnote_date(text):
+    m = FN_DATE_RE.search(text.strip())
+    if not m:
+        return None
+    y, mo, d = m.group(1), m.group(2), m.group(3) or '01'
+    try:
+        return datetime.date(int(y), int(mo), int(d))
+    except ValueError:
+        return None
+
+
+def _format_date(d):
+    return d.strftime("%b %-d, %Y")
+
+
+def extract_footnotes(raw, fallback_date=None):
     """Pull out [^id]: definition lines (repo convention: a PR/commit link +
     author + date noting when a variation was added), turn each inline
     [^id] reference into a clickable superscript marker instead of leaving
-    a literal '[^id]' + a footnote dump at the bottom of the doc."""
+    a literal '[^id]' + a footnote dump at the bottom of the doc.
+
+    Each footnote also gets tagged with the date it cites (falling back to
+    the block file's own last-modified date for the rare footnote that
+    doesn't end in one) and whether that date is within RECENT_DAYS, so
+    build_html.py can color-code just the specific changed content rather
+    than the whole page."""
     order = []
     defs = {}
     for match in FN_DEF_RE.finditer(raw):
@@ -87,14 +121,35 @@ def extract_footnotes(raw):
     for i, fid in enumerate(order, start=1):
         content_html = markdown.markdown(defs[fid], extensions=["tables"])
         content_html = re.sub(r'^<p>|</p>\s*$', '', content_html.strip())
-        footnotes[fid] = {"num": i, "html": content_html}
+        fn_date = _parse_footnote_date(defs[fid]) or fallback_date
+        footnotes[fid] = {
+            "num": i,
+            "html": content_html,
+            "date": fn_date.isoformat() if fn_date else None,
+            "recent": bool(fn_date and fn_date >= RECENT_CUTOFF),
+        }
 
     def replace_ref(m):
         fid = m.group(1)
         fn = footnotes.get(fid)
         if not fn:
             return m.group(0)  # no matching definition, leave as-is
-        return f'<sup class="fn-ref" data-fn="{fid}" title="Click for details">{fn["num"]}</sup>'
+        cls = "fn-ref recent-fn" if fn["recent"] else "fn-ref"
+        if fn["date"]:
+            date_label = _format_date(datetime.date.fromisoformat(fn["date"]))
+            title = f'Added {date_label} — click for details'
+        else:
+            date_label = None
+            title = "Click for details"
+        title = title.replace('"', '&quot;')
+        sup = f'<sup class="{cls}" data-fn="{fid}" title="{title}">{fn["num"]}</sup>'
+        # Same green dot used in the sidebar/header, right next to the exact
+        # changed sentence/row (not just the footnote marker's own color) —
+        # so a recent change is visible at a glance while just scanning the page.
+        if fn["recent"]:
+            dot_title = f'Changed {date_label}' if date_label else 'Changed recently'
+            sup += f'<span class="recent-dot" title="{dot_title}"></span>'
+        return sup
 
     cleaned = FN_REF_RE.sub(replace_ref, cleaned)
     return cleaned, footnotes
@@ -485,15 +540,17 @@ for fname in files:
         "notes": bool(re.search(r'^##\s+Notes', raw, re.MULTILINE)),
     }
 
-    cleaned_raw, footnotes = extract_footnotes(raw)
+    mtime = os.path.getmtime(path)
+    mtime_date = datetime.datetime.fromtimestamp(mtime).date()
+    last_updated = _format_date(mtime_date)
+    recently_updated = mtime_date >= RECENT_CUTOFF
+
+    cleaned_raw, footnotes = extract_footnotes(raw, fallback_date=mtime_date)
     cleaned_raw = convert_example_sections(cleaned_raw, slug)
 
     html = markdown.markdown(cleaned_raw, extensions=["tables", "fenced_code", "sane_lists"])
     html = highlight_autoplay_warning(html)
     html = assign_heading_ids(html)
-
-    mtime = os.path.getmtime(path)
-    last_updated = datetime.datetime.fromtimestamp(mtime).strftime("%b %-d, %Y")
 
     blocks.append({
         "slug": slug,
@@ -503,6 +560,7 @@ for fname in files:
         "wordCount": len(raw.split()),
         "lastUpdated": last_updated,
         "lastUpdatedTs": mtime,
+        "recentlyUpdated": recently_updated,
         "techSpecUrl": TECH_SPEC_LINKS.get(slug),
         "html": html,
         "footnotes": footnotes,
