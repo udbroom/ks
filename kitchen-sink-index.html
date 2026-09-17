@@ -496,7 +496,7 @@
     <div id="block-list-wrapper">
       <div class="list-section-title">Block list</div>
       <div id="block-list"></div>
-      <div class="list-section-title">Non block list</div>
+      <div class="list-section-title">System blocks</div>
       <div id="non-block-list"></div>
     </div>
   </div>
@@ -516,15 +516,19 @@ const searchEl = document.getElementById('search');
 const countEl = document.getElementById('block-count');
 
 // These blocks aren't page-authorable content the way a Hero or Card is —
-// each one is either hidden config (Section Metadata), site-wide chrome
-// pulled from a separate shared doc rather than authored per page (Global
-// Footer, Global Navigation), or a special-purpose embed/utility block tied
-// to one specific context rather than general page content (Iframe embeds
-// an external URL; Region Nav only lives inside the footer's language-picker
-// modal). Listed separately so authors browsing for "a block to add to my
-// page" aren't tripped up by ones they'd never place directly.
+// each one is either hidden config (Section Metadata, Martech Metadata,
+// Modal Metadata), site-wide chrome pulled from a separate shared doc rather
+// than authored per page (Global Footer, Global Navigation), or a
+// special-purpose embed/utility/system block tied to one specific context
+// rather than general page content (Iframe embeds an external URL; Region
+// Nav only lives inside the footer's language-picker modal; Modal is the
+// dialog/fragment wrapper other blocks like Email Collection C2 render
+// inside of, not something authored as its own row). Listed separately
+// under "System blocks" so authors browsing for "a block to add to my page"
+// aren't tripped up by ones they'd never place directly.
 const NON_BLOCK_SLUGS = new Set([
   'global-footer', 'global-navigation', 'iframe', 'region-nav', 'section-metadata',
+  'martech-metadata', 'modal-metadata', 'modal',
 ]);
 
 let activeSlug = null;
