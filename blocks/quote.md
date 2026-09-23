@@ -43,3 +43,6 @@ If neither variation is added, the attribution is left-aligned by default.
 - Only the first three heading/paragraph elements directly in the cell are used (quote, name, role in that order); any additional headings/paragraphs beyond the third are discarded — the block replaces the entire cell's contents with just the built quote/attribution markup.
 - The decorative frame (corner dots, horizontal/vertical guide lines, center dashed line) is entirely CSS-driven and marked `aria-hidden="true"` — it's automatic, not something you author.
 - Use a real typographic opening quote character (e.g. `"`, `‘`, or `«`) if you want the hanging-punctuation treatment; a straight double-quote (`"`) does not match the Unicode "initial punctuation" pattern the code checks for (`\p{Pi}`), so it won't get the special hang-out styling.
+- The quote text is always announced to screen readers as a plain paragraph, even if you author it as a heading (`h1`–`h6`)[^role-paragraph] — so using a heading tag for the quote text won't make it navigable/announced as a heading.
+
+[^role-paragraph]: [#6747](https://github.com/adobecom/milo/pull/6747) — Rares Munteanu, 2026-09-16

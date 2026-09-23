@@ -1,4 +1,4 @@
-import markdown, json, re, os, datetime
+import markdown, json, re, os, datetime, subprocess
 import html as html_mod
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -16,6 +16,30 @@ with open(TECH_SPEC_LINKS_PATH, "r", encoding="utf-8") as f:
 
 FN_DEF_RE = re.compile(r'^\[\^([\w-]+)\]:[ \t]*(.+)$', re.MULTILINE)
 FN_REF_RE = re.compile(r'\[\^([\w-]+)\]')
+
+
+def _git_commit_date(path):
+    """Date of the most recent commit that touched this file (via `git log`),
+    used instead of the filesystem mtime for the "recently updated" signal —
+    mtime can get bumped by an unrelated checkout/commit without the file's
+    content actually changing, which git's own history doesn't do. Returns
+    None if the file isn't tracked yet (e.g. a brand-new uncommitted pull),
+    so the caller can fall back to mtime in that one case."""
+    try:
+        result = subprocess.run(
+            ["git", "log", "-1", "--format=%cd", "--date=short", "--", path],
+            cwd=DOCS_ROOT, capture_output=True, text=True, timeout=5,
+        )
+    except Exception:
+        return None
+    out = result.stdout.strip()
+    if not out:
+        return None
+    try:
+        y, m, d = out.split("-")
+        return datetime.date(int(y), int(m), int(d))
+    except ValueError:
+        return None
 
 # The "#autoplay alone" gotcha sentence recurs (with minor per-block wording)
 # across every video-authoring Notes bullet — flag it visually wherever it
@@ -70,7 +94,7 @@ def assign_heading_ids(html):
 # A footnote's change counts as "recent" (and gets flagged with a color)
 # if it happened within this many days of build time. Recomputed on every
 # rebuild, so the highlight naturally fades off content as it ages out.
-RECENT_DAYS = 14
+RECENT_DAYS = 21
 TODAY = datetime.date.today()
 RECENT_CUTOFF = TODAY - datetime.timedelta(days=RECENT_DAYS)
 
@@ -542,10 +566,16 @@ for fname in files:
 
     mtime = os.path.getmtime(path)
     mtime_date = datetime.datetime.fromtimestamp(mtime).date()
-    last_updated = _format_date(mtime_date)
-    recently_updated = mtime_date >= RECENT_CUTOFF
+    # Prefer the file's actual git commit history over filesystem mtime —
+    # mtime can get touched by an unrelated commit/checkout with no real
+    # content change (this bit us on base-card.md). Only a brand-new,
+    # not-yet-committed file falls back to mtime.
+    git_date = _git_commit_date(os.path.join("blocks", fname))
+    last_updated_date = git_date or mtime_date
+    last_updated = _format_date(last_updated_date)
+    recently_updated = last_updated_date >= RECENT_CUTOFF
 
-    cleaned_raw, footnotes = extract_footnotes(raw, fallback_date=mtime_date)
+    cleaned_raw, footnotes = extract_footnotes(raw, fallback_date=last_updated_date)
     cleaned_raw = convert_example_sections(cleaned_raw, slug)
 
     html = markdown.markdown(cleaned_raw, extensions=["tables", "fenced_code", "sane_lists"])

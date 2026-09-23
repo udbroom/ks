@@ -362,7 +362,7 @@ html = """<!DOCTYPE html>
   }
   .fn-ref:hover { background: #d9e6fb; }
   .fn-ref.open { background: #0265DC; color: #fff; }
-  /* Green = changed within the last 2 weeks, on both the footnote marker
+  /* Green = changed within the last 3 weeks, on both the footnote marker
      next to the specific changed sentence/row and the sidebar/header dots
      below — one consistent color for "recent" across the app. */
   .fn-ref.recent-fn { background: #e6f4ea; color: #1a7f37; }
@@ -580,7 +580,7 @@ function renderBlockGroup(containerEl, blocks, q) {
       const snippet = getSnippet(b.raw, q, 40);
       if (snippet) snippetHtml = `<div class="block-snippet">${highlightPlain(snippet, q)}</div>`;
     }
-    // Small dot = changed within the last 2 weeks (see recentlyUpdated in
+    // Small dot = changed within the last 3 weeks (see recentlyUpdated in
     // convert.py). Deliberately subtle — a dot, not a badge/pill — with the
     // actual date only surfacing on hover so the list doesn't get noisy.
     const recentDot = b.recentlyUpdated
@@ -656,7 +656,7 @@ function selectBlock(slug, opts) {
     <div class="doc-summary">
       <div><strong>Quick summary:</strong> ${b.summary || '<em>No summary found.</em>'}</div>
       <div class="doc-summary-footer">
-        <span class="updated-date">Updated ${b.lastUpdated}${b.recentlyUpdated ? '<span class="recent-dot" title="Changed within the last 2 weeks"></span>' : ''}</span>
+        <span class="updated-date">Updated ${b.lastUpdated}${b.recentlyUpdated ? '<span class="recent-dot" title="Changed within the last 3 weeks"></span>' : ''}</span>
         <span class="footer-sep">&middot;</span>
         ${b.techSpecUrl
           ? `<a class="tech-spec-link" href="${b.techSpecUrl}" target="_blank" rel="noopener">Tech spec &#8599;</a>`
