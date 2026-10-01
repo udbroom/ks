@@ -56,11 +56,11 @@ Add modifier classes to the block name cell (these are read from the block's own
 - On mobile, video slides autoplay/rewind based on scroll position via `IntersectionObserver`; this is automatic once a video is present in a slide's media cell.
 - Video gotcha: pair the video link with its poster image as two adjacent cells in the same row — Milo grabs the poster from whichever image sits next to the video link, and won't show one otherwise. For the scroll-triggered play/pause above to actually kick in, the video link's hash needs both `autoplay` and `viewportplay`, e.g. `#autoplay#viewportplay`. Using `#autoplay` alone plays the video immediately on page load — by the time it scrolls into view it has already finished, so visitors just see its frozen last frame.
 - With `slides-3`[^slides-3-video], video in either the image grid or the carousel slides autoplays purely on scroll position (playing once ~50% visible, pausing when it scrolls out) — the `#autoplay#viewportplay` hash convention above isn't needed for these. This only kicks in for videos **5.1 seconds or shorter**; longer videos are left paused on their poster frame instead of autoplaying. Reduced-motion visitors never get autoplay here either way.
-- In most deployments, a slide's accessible name is built from its own eyebrow and heading text — there's no special first-slide treatment and no generic "N of &lt;slide count&gt;" announcement. In one deployment the older behavior remains: the first slide gets a distinct label built from its link text, and every other slide is announced only as "N of &lt;slide count&gt;." Either way this is automatic. A slide whose link opens a modal is also announced as a button rather than a link in most deployments; one deployment always announces it as a link.[^a11y-label]
+- A slide's accessible name is built from its own eyebrow and heading text via `aria-labelledby` — there's no special first-slide treatment and no generic "N of &lt;slide count&gt;" announcement, and a slide whose link opens a modal is announced as a button rather than a plain link. This is now consistent everywhere (as of 2026-09-15, the one deployment still using the older "N of &lt;slide count&gt;"/focus-move pattern was updated to match).[^a11y-label]
 
 [^slides-3]: [#6406](https://github.com/adobecom/milo/pull/6406) — Denys Fedotov, 2026-08-05
 [^slides-3-video]: [#6469](https://github.com/adobecom/milo/pull/6469) — Ryan Clayton, 2026-08-20
-[^a11y-label]: [#6177](https://github.com/adobecom/milo/pull/6177) — 2026-06 (reached this branch's other deployment 2026-08-25)
+[^a11y-label]: [#6177](https://github.com/adobecom/milo/pull/6177) — 2026-06; converged everywhere by [#6707](https://github.com/adobecom/milo/pull/6707) — Denys Fedotov, 2026-09-15
 
 ## GTK
 

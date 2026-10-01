@@ -16,7 +16,12 @@ Item numbers ("1.", "2.", "3.", ...) are generated automatically — do not type
 
 ## Variations
 
-This block has no modifier classes on the block name. It does have one structural authoring feature: **per-viewport content overrides**, via `decorateViewportContent`.
+This block has two modifier classes for the block name (support varies — check your environment), plus one structural authoring feature: **per-viewport content overrides**, via `decorateViewportContent`.
+
+| Class | Effect | Availability |
+|---|---|---|
+| `no-animation` | Disables the cursor-follower photo pile entirely — hover media is hidden and hovering an item shows no highlight background. Use for a plain numbered list with no photo-pile effect. | Only some deployments |
+| `compact-headline` | Caps the headline column width on tablet and up, so a longer heading doesn't compete for space with the item list. | Only some deployments |
 
 | Feature | Effect | How to author it |
 |---|---|---|
@@ -58,5 +63,6 @@ With a per-viewport override (mobile shows fewer items than desktop; breakpoint 
 - Keyboard/touch users don't get a cursor to "hover" with — on narrower viewports the media block for each item is shown inline instead of relying on mouse position, so content isn't lost, just presented differently.
 - Because only the first cell of row 1 is used for the headline, don't rely on additional cells in the headline row — they're silently dropped.
 - Standalone link support[^standalone-link]: same pattern used elsewhere in Milo (see [Split Aside Grid](./split-aside-grid.md)'s Notes) — a paragraph whose entire text is just a link becomes a styled label-link, not a plain sentence or button.
+- Pressing Escape while hover media is showing dismisses it — automatic, no authoring needed, and consistent across all deployments.
 
 [^standalone-link]: [`d075de0`](https://github.com/adobecom/milo/commit/d075de0) — "Wave 5 base tweaks"

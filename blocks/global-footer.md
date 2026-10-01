@@ -17,6 +17,17 @@ The real authoring happens **in the footer document**, which follows this struct
 | Region selector | One link, authored with the "region-selector" styling, pointing either to a page fragment (renders as an expandable in-page region list) or to a URL with a `#` hash (renders as a button that opens the region-picker in a modal). |
 | Social links | A set of links to known social platforms (Facebook, Instagram, X/Twitter, LinkedIn, Pinterest, Discord, Behance, YouTube, Weibo) authored with the "social" styling — each recognized platform link is swapped for its icon automatically. |
 | Legal / copyright | A paragraph whose copyright sentence is wrapped in *italics* (em) — this text is stripped out and replaced with "© `<current year>` Adobe Inc. `<rest of your italic text>`" automatically. Any additional privacy links (e.g. "Do not sell my info", "Cookie preferences", "Ad choices") go in the same block, after the copyright paragraph. |
+| Custom logo (optional, any footer document) | A section named/styled "brand" whose first row is one link authored as `<path-to-svg> \| <alt text>` — replaces the default Adobe logo in the footer with your own. If you leave out the alt text, the logo's alt defaults to "Adobe" — always supply your own alt text for a non-Adobe logo. |
+
+## Event footer
+
+Appending `#event` to the resolved footer document's path (e.g. set `footer-source` to `/footer#event`, or add `#event` directly if you're pointing at the default document) switches the footer to an alternate "event" layout: a mailing-list signup, social icons, and a contact-support block are shown, in that order, above the legal row — instead of the usual region-picker → legal → social order. To use it, add these sections to the footer document:
+
+| Section | Content |
+|---|---|
+| `mailing-list` | A short paragraph of copy plus one link, which becomes the signup CTA button. The link can point to a `#` hash to open a modal, the same convention used for the region-selector link below. |
+| `contact-support` | Paragraphs/links for a small "need help?" block. |
+| `brand`, second row (event mode only) | Per-viewport (mobile, tablet, desktop, in that order) background image links for the footer. This row only takes effect in event mode — the custom-logo first row of `brand` works in any footer document. |
 
 ## Variations
 
@@ -65,3 +76,4 @@ In the shared footer document (`/footer`), a minimal example:
 - If the footer document can't be fetched, the footer silently fails to render (logged as an error) rather than showing a broken block — always verify the footer document path exists and is published.
 - Menu columns automatically collapse into a "stacked" 3-per-row grid on desktop if there are more than 3 columns and they don't all fit on one line — no manual layout authoring is needed for that.
 - Region-selector links that include a `#` hash open in a modal (loading the region-nav block); links without a hash instead load as an inline expanding fragment. Pick the destination link type based on which behavior you want.
+- Turning on the event footer (see above) reorders the footer-options row — if a page's footer suddenly looks reordered (mailing-list/social/contact-support above legal, no region picker) check whether its `footer-source` points at a document/path ending in `#event`.

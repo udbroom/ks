@@ -13,7 +13,8 @@
 
 | Variation | Effect | How to author |
 |---|---|---|
-| `blur-background`[^blur-background] | Makes the block's own background transparent and adds a frosted-glass gradient/blur backdrop behind it instead — use when the block sits over imagery or another section's background you want to show through softly. Automatically adjusts its bottom edge when the following section has a `rounded-corners-top` treatment, so the blur doesn't overshoot the corner. | Add `blur-background` to the block name, e.g. `Quick Actions (blur-background)`. |
+| `blur-background`[^blur-background] | Makes the block's own background transparent and adds a frosted-glass gradient/blur backdrop behind it instead — use when the block sits over imagery or another section's background you want to show through softly. Automatically adjusts its bottom edge when the following section has a `rounded-corners-top` treatment, so the blur doesn't overshoot the corner. The frosted blur/gradient only renders at tablet width and up — on mobile it falls back to a flat solid backdrop instead. | Add `blur-background` to the block name, e.g. `Quick Actions (blur-background)`. |
+| `center-mobile` | Centers the section header (heading + CTA) instead of left-aligning it, on mobile only (below 768px). | Add `center-mobile` to the block name, e.g. `Quick Actions (center-mobile, blur-background)`. |
 
 [^blur-background]: [`d075de0`](https://github.com/adobecom/milo/commit/d075de0) — "Wave 5 base tweaks"
 

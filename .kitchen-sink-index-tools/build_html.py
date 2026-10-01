@@ -378,6 +378,9 @@ html = """<!DOCTYPE html>
     vertical-align: middle;
     flex-shrink: 0;
   }
+  a.recent-dot {
+    cursor: pointer;
+  }
   #fn-popup {
     position: fixed;
     background: #1d1d1f;

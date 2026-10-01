@@ -119,6 +119,58 @@ def _format_date(d):
     return d.strftime("%b %-d, %Y")
 
 
+# Pull a PR number / commit hash / author name back out of a footnote's own
+# citation text, so the in-content recent-dot can say more than just a date
+# — and link straight to the PR (or commit, if that's all a citation has).
+# Priority for the "what changed it" label: an explicit PR link, then a bare
+# "PR #1234" mentioned in prose (e.g. a commit that later landed via a PR),
+# then falling back to a commit hash if that's all the citation has.
+MILO_REPO_URL = "https://github.com/adobecom/milo"
+
+FN_PR_URL_RE = re.compile(r'/pull/(\d+)')
+FN_PR_TEXT_RE = re.compile(r'PR\s*#(\d+)')
+FN_COMMIT_URL_RE = re.compile(r'/commit/([0-9a-f]{6,40})')
+# The author's name reliably appears right after an em dash, as two-or-more
+# capitalized words followed by a comma — true whether that em dash is the
+# only one in the citation or (as with a quoted PR title containing its own
+# em dash) the last one before the name.
+FN_AUTHOR_RE = re.compile(r'—\s*([A-Z][A-Za-z.\'-]+(?:\s+[A-Z][A-Za-z.\'-]+)+),')
+
+
+def _abbreviate_author(name):
+    """"Ryan Clayton" -> "Ryan C." — keeps the tooltip short."""
+    parts = name.split()
+    if len(parts) < 2:
+        return name
+    return f'{parts[0]} {parts[-1][0]}.'
+
+
+def _parse_footnote_meta(text):
+    pr = commit_full = commit_short = author = None
+    m = FN_PR_URL_RE.search(text)
+    if m:
+        pr = m.group(1)
+    else:
+        m = FN_PR_TEXT_RE.search(text)
+        if m:
+            pr = m.group(1)
+    if not pr:
+        m = FN_COMMIT_URL_RE.search(text)
+        if m:
+            commit_full = m.group(1)
+            commit_short = commit_full[:7]
+    m = FN_AUTHOR_RE.search(text)
+    if m:
+        author = m.group(1)
+    if pr:
+        url = f'{MILO_REPO_URL}/pull/{pr}'
+    elif commit_full:
+        url = f'{MILO_REPO_URL}/commit/{commit_full}'
+    else:
+        url = None
+    return pr, commit_short, author, url
+
+
 def extract_footnotes(raw, fallback_date=None):
     """Pull out [^id]: definition lines (repo convention: a PR/commit link +
     author + date noting when a variation was added), turn each inline
@@ -146,11 +198,16 @@ def extract_footnotes(raw, fallback_date=None):
         content_html = markdown.markdown(defs[fid], extensions=["tables"])
         content_html = re.sub(r'^<p>|</p>\s*$', '', content_html.strip())
         fn_date = _parse_footnote_date(defs[fid]) or fallback_date
+        pr, commit, author, fn_url = _parse_footnote_meta(defs[fid])
         footnotes[fid] = {
             "num": i,
             "html": content_html,
             "date": fn_date.isoformat() if fn_date else None,
             "recent": bool(fn_date and fn_date >= RECENT_CUTOFF),
+            "pr": pr,
+            "commit": commit,
+            "author": author,
+            "url": fn_url,
         }
 
     def replace_ref(m):
@@ -171,8 +228,19 @@ def extract_footnotes(raw, fallback_date=None):
         # changed sentence/row (not just the footnote marker's own color) —
         # so a recent change is visible at a glance while just scanning the page.
         if fn["recent"]:
-            dot_title = f'Changed {date_label}' if date_label else 'Changed recently'
-            sup += f'<span class="recent-dot" title="{dot_title}"></span>'
+            dot_title = date_label or 'Recently changed'
+            if fn["pr"]:
+                dot_title += f' — PR #{fn["pr"]}'
+            elif fn["commit"]:
+                dot_title += f' — commit {fn["commit"]}'
+            if fn["author"]:
+                dot_title += f', {_abbreviate_author(fn["author"])}'
+            dot_title = dot_title.replace('"', '&quot;')
+            if fn["url"]:
+                sup += (f'<a class="recent-dot" href="{fn["url"]}" target="_blank" '
+                        f'rel="noopener" title="{dot_title}"></a>')
+            else:
+                sup += f'<span class="recent-dot" title="{dot_title}"></span>'
         return sup
 
     cleaned = FN_REF_RE.sub(replace_ref, cleaned)

@@ -17,7 +17,7 @@ The block's parsing code (`parseAuthoredContent`) reads **exactly 6 rows**, in t
 
 ## Variations
 
-This block has no author-facing variation classes to add to the block-name cell. The only alternate state — a static, non-scroll-animated layout showing the settled grid + slotted mockup end-state — is applied automatically for visitors with `prefers-reduced-motion` enabled; there is nothing an author authors to trigger it.
+This block has no author-facing variation classes to add to the block-name cell. The only alternate state — a static, non-scroll-animated layout showing the settled grid + slotted mockup end-state — is applied automatically for visitors with `prefers-reduced-motion` enabled, or on short, high-pixel-density viewports (e.g. a phone in landscape) where the full scroll sequence wouldn't have room to play out; there is nothing an author authors to trigger either case.
 
 ## Example
 

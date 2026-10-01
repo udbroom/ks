@@ -1,6 +1,6 @@
 # Global Navigation
 
-> **Quick summary:** The shared Adobe header bar (logo, primary nav, search, sign-in) that appears at the top of every Milo page. The block's own table content is never read — it just mounts the shared federal nav app, which pulls real content from a separate nav document (default `/gnav`, overridable via a `gnav-source` metadata key). This block has no author-facing variations at all — its CSS is empty and it checks no modifier classes.
+> **Quick summary:** The shared Adobe header bar (logo, primary nav, search, sign-in) that appears at the top of every Milo page. The block's own table content is never read — it just mounts the shared federal nav app, which pulls real content from a separate nav document (default `/gnav`, overridable via a `gnav-source` metadata key). Most behavior is controlled through page Metadata keys rather than block content or modifier classes — see Authoring instructions below.
 
 ## Authoring instructions
 
@@ -13,13 +13,15 @@ Add a block named "Global Navigation" to the page (typically the first block in 
 The nav's real content lives in a separate document, resolved as follows:
 - By default, Milo fetches `/gnav` at the site's content root.
 - If the page has a **Metadata** block with key `gnav-source`, its value (a path) is used instead, e.g. `gnav-source: /fr/gnav`.
-- A Metadata key `unav` with value `on` enables Universal Nav (the cross-Adobe app switcher/profile menu) alongside the standard nav.
+- A Metadata key `universal-nav` with value `on` enables Universal Nav (the cross-Adobe app switcher/profile menu) alongside the standard nav. (This key was previously named `unav` — that old key no longer has any effect; existing pages using it should be updated to `universal-nav`.)
+- A Metadata key `gnav-foundation` set to `c2` mounts this styled/sticky global nav on a page whose overall `foundation` metadata is *not* already `c2` — use this to bring the current-generation nav onto an otherwise older-generation page.
+- An "App Prompt" can be shown to signed-in desktop visitors, offering to open a companion web app. It requires two Metadata keys to both be set — `app-prompt-entitlement` and `app-prompt-path` — and can be turned off outright with `app-prompt: off`.
 
 Editing the logo, nav items, search behavior, or sign-in flow is done in that separate gnav document/federal nav system, not in this block's table.
 
 ## Variations
 
-This block has no author-facing variations. It doesn't check for any modifier classes, and its CSS file is empty — all visual styling comes from the shared federal navigation stylesheet loaded at runtime.
+This block itself has no author-facing modifier classes — its own CSS file only styles the App Prompt and the `gnav-foundation: c2` host state described above. All other visual styling comes from the shared federal navigation stylesheet loaded at runtime; behavior changes are made through the page Metadata keys listed in Authoring instructions, not through block classes.
 
 ## Example
 
@@ -32,7 +34,10 @@ Paired page Metadata (optional):
 | Row | Content |
 |---|---|
 | gnav-source | /gnav |
-| unav | on |
+| universal-nav | on |
+| gnav-foundation | c2 |
+| app-prompt-entitlement | creative_cloud |
+| app-prompt-path | /apps/creative-cloud |
 
 ## Notes
 

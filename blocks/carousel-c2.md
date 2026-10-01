@@ -58,6 +58,7 @@ Then, elsewhere on the same page, as separate sections:
 
 - The **first slide you author becomes the initially active/visible slide**. Behind the scenes the carousel repositions slides for the infinite-loop peek effect (so the last slide appears to sit just before the first), but whichever slide you authored first is always what visitors see active on load.
 - Every section you want in the carousel needs its own Section Metadata `carousel` row with the matching name — a slide's section without this row will just render as a normal standalone page section and won't join the carousel.
+- The carousel needs **at least two slides** matched to it. If fewer than two sections match the carousel name, the block renders nothing at all (it clears itself) rather than showing a single broken slide.
 - Because matching happens by exact text match on the carousel name, typos (extra spaces, different casing) will silently drop a slide from the carousel instead of erroring.
 - Buttons, indicators, and the live-region announcement ("Slide 2 of 5, …") are all generated automatically — do not author them.
 - RTL languages automatically reverse slide order and mirror the arrows; no extra authoring needed.
